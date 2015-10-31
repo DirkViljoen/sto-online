@@ -1,0 +1,132 @@
+//- Non-Angular
+
+mixin form-inputbox(type, id, label, placeholder, myValue, size, readonly, required, minLen, maxLen)
+    .form-group
+        label.control-label.col-md-2.col-sm-3(for=id)= label
+        - var inSize
+        if size
+            - inSize = size
+        else
+            - inSize = 5
+        div.col-md-10.col-sm-9.input-group
+            input.form-control(type=type id=id name=id placeholder=placeholder value=myValue readonly=readonly required=required minlength=minLen maxlength=maxLen size=inSize)
+
+mixin form-submit(label, path, id)
+    input.btn.btn-default(id=id type="submit" value=label)
+
+//- Angular mixins
+
+mixin ng-input-text(name, label, model, placeholder, required, readonly, minLen, maxLen, changeEvent, blurEvent)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=name)= label
+        div.input-group
+            input.form-control(type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, minlength=minLen, maxlength=maxLen size='40', ng-change=changeEvent, ng-blur=blurEvent)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+
+mixin ng-input-textarea(name, label, model, placeholder, required, readonly, minLen, maxLen, changeEvent, blurEvent)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=name)= label
+        div.input-group
+            textarea.form-control(rows='4', cols='50', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, minlength=minLen, maxlength=maxLen size='40', ng-change=changeEvent, ng-blur=blurEvent)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+
+mixin ng-input-text-alt(name, label, model, placeholder, required, readonly, minLen, maxLen, changeEvent, blurEvent)
+    .form-group
+        label.control-label.col-sm-6(for=name)= label
+        div.input-group
+            input.form-control(type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, minlength=minLen, maxlength=maxLen size='40', ng-change=changeEvent, ng-blur=blurEvent)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+
+mixin ng-input-text-min(name, model, placeholder, required, readonly, minLen, maxLen, changeEvent, blurEvent)
+    input.form-control(type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, minlength=minLen, maxlength=maxLen size='40', ng-change=changeEvent, ng-blur=blurEvent)
+
+mixin ng-input-color-min(name, model, placeholder, required, readonly, changeEvent, blurEvent)
+    input.form-control(type='color', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required size='40', ng-change=changeEvent, ng-blur=blurEvent)
+
+mixin ng-input-password(name, label, model, placeholder, required, readonly, minLen, maxLen, changeEvent, blurEvent)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=name)= label
+        div.input-group
+            input.form-control(type='password', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, minlength=minLen, maxlength=maxLen size='40', ng-change=changeEvent, ng-blur=blurEvent)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+
+mixin ng-input-email(name, label, model, placeholder, required, readonly, minLen, maxLen)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=name)= label
+        div.input-group
+            span.input-group-addon
+                span.glyphicon.glyphicon-envelope
+            input.form-control(type='email', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, minlength=minLen, maxlength=maxLen)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+
+mixin ng-input-currency(name, label, model, placeholder, required, readonly, minLen, maxLen)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=id)= label
+        div.input-group
+            span.input-group-addon
+                span.glyphicon
+                    b R
+            input.form-control(type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, minlength=minLen, maxlength=maxLen)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+
+mixin ng-input-checkbox(name, label, model, selected, required, readonly)
+    .form-group
+        .col-md-3.col-sm-4
+        div.input-group
+            input(type="checkbox", name=name, ng-model=model, required=required, readonly=readonly)
+            label &nbsp;
+            label(for=id)= label
+
+mixin ng-input-hidden(model)
+    .form-group
+        input.form-control(type='hidden' ng-model=model readonly=readonly)
+
+mixin ng-input-combobox(name, label, model, placeholder, options, required, readonly, changeEvent)
+    .form-group
+        label.control-label.col-md-3.col-sm-4= label
+        div.input-group
+            select.form-control(name=name, ng-model=model, ng-options=options, placeholder=placeholder, readonly=readonly, required=required, ng-change=changeEvent)
+
+mixin ng-input-combobox-alt(name, label, model, placeholder, options, required, readonly, changeEvent)
+    .form-group
+        label.control-label.col-md-5.col-sm-6= label
+        div.input-group
+            select.form-control(name=name, ng-model=model, ng-options=options, placeholder=placeholder, readonly=readonly, required=required, ng-change=changeEvent)
+
+mixin ng-input-combobox-min(name, model, placeholder, options, required, readonly, changeEvent)
+    select.form-control(name=name, ng-model=model, ng-options=options, placeholder=placeholder, readonly=readonly, required=required, ng-change=changeEvent)
+
+mixin ng-input-calendar(name, label, model, placeholder, required, readonly)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=id)= label
+        div.input-group
+            span.input-group-addon
+                span.glyphicon.glyphicon-calendar
+            input.form-control.dtpicker(type='text', name=name, ng-model=model, placeholder=placeholder, data-value=myValue, required=required, readonly=readonly)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+
+mixin ng-input-time(name, label, model, placeholder, required, readonly)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=id)= label
+        div.input-group
+            span.input-group-addon
+                span.glyphicon.glyphicon-calendar
+            input.form-control.tmpicker(type='text', name=name, ng-model=model, placeholder=placeholder, data-value=myValue, required=required, readonly=readonly)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+

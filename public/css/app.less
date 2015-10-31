@@ -1,0 +1,84 @@
+@base: #f938ab;
+
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  -webkit-box-shadow: @style @c;
+  box-shadow:         @style @c;
+}
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+.box {
+  color: saturate(@base, 5%);
+  border-color: lighten(@base, 30%);
+  div { .box-shadow(0 0 5px, 30%) }
+}
+
+.positionRelative{
+    position: relative;
+    padding-top: 70px;
+}
+
+.grouphead {
+    background-color: #C6D6CC;
+
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-radius: 5px 5px 0px 0px;
+    border: 1px solid #98B3AE;
+}
+
+.groupbox {
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    padding: 7px;
+    border-radius: 0px 0px 5px 5px;
+    border: 1px solid #98B3AE;
+}
+
+.form-group {
+    margin-left: 6px;
+    margin-right: 6px;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.room {
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px grey;
+    border-style: solid;
+    border-width: 1px;
+    // height:200px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.docter {
+    border-radius: 15px 30px 50px 15px;
+    box-shadow: 2px 2px 5px grey;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.therapist {
+    border-radius: 15px 50px 30px 15px;
+    box-shadow: 2px 2px 5px grey;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.sister {
+    border-radius: 15px 50px 30px 15px;
+    box-shadow: 2px 2px 5px grey;
+    border-style: solid;
+    border-width: 1px;
+    margin: 5px;
+    padding: 5px;
+}

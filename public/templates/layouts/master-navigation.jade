@@ -1,0 +1,53 @@
+html(lang="en", ng-app="app")
+    head
+        title STO Online
+
+        link(rel="stylesheet", href="/components/bootstrap/dist/css/bootstrap.min.css")
+        link(rel="stylesheet", href="/css/app.css")
+
+    body.container-fluid.positionRelative(id='Navigation', ng-controller='nav-ctrl', ng-init='initnav()')
+        nav.navbar.navbar-default.navbar-fixed-top
+            .container-fluid
+                .navbar-header
+                    .navbar-brand
+                        label STO Online
+                .collapse.navbar-collapse(id="bs-example-navbar-collapse-1")
+                    ul.nav.navbar-nav
+                        li
+                            a(href="/") Home
+                        li
+                            a(href="/rooms/view") Cubicles
+                        li.dropdown
+                            a(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") Settings
+                                span(class="caret")
+                            ul.dropdown-menu
+                                li
+                                    a(href="/settings/docters") Manage docters
+                                li
+                                    a(href="/settings/therapists") Manage therapists
+
+                    ul.nav.navbar-nav.navbar-right
+                        if (u)
+                            li.active
+                                a(href="#") Signed in as !{u.name}
+                            li
+                                a(href="/logout") Log out
+                        else
+                            li
+                                a(href="/login") Log in
+        .row.container-fluid
+            block content
+
+        //- script(src="/bower_components/jquery/dist/jquery.min.js")
+        script(src="/components/jquery/dist/jquery.min.js")
+        script(src='/components/angular/angular.min.js')
+        script(src='/components/angular-route/angular-route.min.js')
+        script(src="/components/bootstrap/dist/js/bootstrap.min.js")
+        script(src="/components/angular-timer/dist/angular-timer.min.js")
+        script(src='/components/moment/min/moment.min.js')
+        script(src='/components/moment/min/locales.min.js')
+        script(src='/components/humanize-duration/humanize-duration.js')
+
+        script(src="/js/angular.js")
+
+

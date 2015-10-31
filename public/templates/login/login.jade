@@ -1,0 +1,12 @@
+extends ../layouts/master_login
+include ../../mixins/mixins
+
+block content
+    form.form-signin.form-horizontal(action='/login/',method='post')
+        h2 Login details
+        if (messages)
+          p !{messages}
+        br
+        +form-inputbox('text', 'username', 'Username:', 'Enter your username', '')
+        +form-inputbox('password', 'password', 'Password:', 'Enter your password', '')
+        +form-submit('Login', '/login', 'btnLogin')

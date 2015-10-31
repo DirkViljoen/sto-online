@@ -1,0 +1,60 @@
+extends ../layouts/master-content
+include ../../mixins/mixins
+
+block content
+    form(id='RoomManage', ng-controller='rooms-ctrl', ng-init='initmanage()')
+        .row
+            .col-md-1
+            .col-md-10.table-responsive
+                table.table.table-hover(id="rooms-table" st-table='rooms')
+                    thead
+                        tr
+                            th Room
+                            th Docter assigned
+                            th Therapist assigned
+                            th Sister
+
+                    tbody
+                        tr(ng-repeat="row in rooms | orderBy:'name'")
+                            td {{row.name}}
+                            td
+                                .form-group
+                                    ul.nav.nav-pills
+                                        li
+                                            +ng-input-combobox-min('doc', 'row.docter', 'Select a docter', 'docter._id as docter.name for docter in docters', false, false)
+                                        li
+                                            &nbsp;
+                                        li(role='presentation')
+                                            input.btn.btn-primary(type="button", value="Start", ng-click='dstart(row._id)')
+                                        li(role='presentation')
+                                            input.btn.btn-default(type="button", value='Stop', ng-click='dstop(row._id)')
+                                        li(role='presentation')
+                                            input.btn.btn-default(type="button", value='Reset', ng-click='dreset(row._id)')
+                            td
+                                .form-group
+                                    ul.nav.nav-pills
+                                        li
+                                            +ng-input-combobox-min('ther', 'row.therapist', 'Select a therapist', 'ther._id as ther.name for ther in therapists', false, false)
+                                        li
+                                            &nbsp;
+                                        li(role='presentation')
+                                            input.btn.btn-primary(type="button", value="Start", ng-click='tstart(row._id)')
+                                        li(role='presentation')
+                                            input.btn.btn-default(type="button", value='Stop', ng-click='tstop(row._id)')
+                                        li(role='presentation')
+                                            input.btn.btn-default(type="button", value='Reset', ng-click='treset(row._id)')
+
+                            td
+                                .form-group
+                                    ul.nav.nav-pills
+                                        li(role='presentation')
+                                            input.btn.btn-primary(type="button", value="Start", ng-click='sstart(row._id)')
+                                        li(role='presentation')
+                                            input.btn.btn-default(type="button", value='Stop', ng-click='sstop(row._id)')
+                                        li(role='presentation')
+                                            input.btn.btn-default(type="button", value='Reset', ng-click='sreset(row._id)')
+
+
+        p {{docters}}
+        p {{therapists}}
+        p {{rooms}}

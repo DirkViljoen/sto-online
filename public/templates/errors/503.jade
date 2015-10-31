@@ -1,0 +1,14 @@
+extends ../layouts/master_error
+include ../../mixins/mixins
+
+block content
+  form.form-horizontal(ng-controller="FixingController", ng-init="routehome()")
+      h1 Error 503
+      h2 Oh crap 503!!!! What is this!?
+      p Keep calm and report the error
+      p
+        code
+            pre= err
+      ul.nav.nav-pills
+          li(role='presentation')
+              a.btn-primary(href='/' id='btn') Lets go back home

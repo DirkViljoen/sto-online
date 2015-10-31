@@ -1,0 +1,10 @@
+extends ../layouts/master_login
+include ../../mixins/mixins
+
+block content
+  form.form-signin.form-horizontal
+      h1 Unauthorized user
+      p You are not authorized to view this page
+      ul.nav.nav-pills
+        li(role='presentation')
+            a.btn-primary(href='/' id='btn') Lets go back home

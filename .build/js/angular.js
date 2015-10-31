@@ -1,0 +1,470 @@
+var myModule = angular.module('app', ['timer','ngRoute']);
+
+var docterDefualtTime = 20,
+    therapistDefualtTime = 20,
+    sisterDefualtTime = 5;
+
+myModule.controller('rooms-ctrl', function($scope, $http, $window) {
+    $scope.loading = 0;
+    $scope.error = '';
+
+    $scope.docter = {};
+    $scope.docters = [];
+    $scope.docterscopy = [];
+    $scope.therapist = {};
+    $scope.therapists = [];
+    $scope.therapistscopy = [];
+    $scope.room = {};
+    $scope.rooms = [];
+
+
+    // database
+
+        getDocters = function(){
+            $http.get('/api/docters').then(function(response) {
+                // console.log(response.data);
+                if (response.data) {
+                    $scope.docters = response.data;
+                    for (i = 0; i < $scope.docters.length; i++){
+                        $scope.docterscopy.push({_id:$scope.docters[i]._id, name:$scope.docters[i].name, colour:$scope.docters[i].colour})
+                    }
+                    $scope.loading++;
+                    buildrooms();
+                }
+            }, function(err) {
+                $scope.error = err.data;
+            });
+        };
+
+        getTherapists = function (){
+            $http.get('/api/therapists').then(function(response) {
+                // console.log(response.data);
+                if (response.data) {
+                    $scope.therapists = response.data;
+                    for (i = 0; i < $scope.therapists.length; i++){
+                        $scope.therapistscopy.push({_id:$scope.therapists[i]._id, name:$scope.therapists[i].name, colour:$scope.therapists[i].colour})
+                    }
+                    $scope.loading++;
+                    buildrooms();
+                }
+            }, function(err) {
+                $scope.error = err.data;
+            });
+        };
+
+        getRooms = function (){
+            $http.get('/api/rooms').then(function(response) {
+                // console.log(response.data);
+                if (response.data) {
+                    $scope.rooms = response.data;
+                    $scope.loading++;
+                    buildrooms();
+                }
+            }, function(err) {
+                $scope.error = err.data;
+            });
+        };
+
+        getRoom = function (id){
+            $http.get('/api/rooms/' + id).then(function(response) {
+                // console.log(response.data);
+                if (response.data) {
+                    $scope.room = response.data;
+                }
+            }, function(err) {
+                $scope.error = err.data;
+            });
+        };
+
+        $scope.saveRoom = function(){
+            console.log($scope.room)
+            $http.put('/api/rooms/' + $scope.room._id, $scope.room)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+
+        };
+
+        $scope.saveDocters = function(){
+            for (i = 0; i < $scope.docters.length; i++){
+                found = false;
+                for (k = 0; k < $scope.docterscopy.length; k++){
+                    console.log('i:', i, $scope.docters[i]._id);
+                    console.log('k:', k, $scope.docterscopy[k]._id);
+                    if ($scope.docters[i]._id == $scope.docterscopy[k]._id){
+                        console.log('found');
+                        found = true;
+                        $http.put('/api/docters/' + $scope.docterscopy[k]._id, $scope.docterscopy[k])
+                        .then(
+                            function(result){
+                                console.log('Successfull update')
+                            }
+                        )
+                    }
+                    else{
+                        if (k + 1 == $scope.docterscopy.length && found == false){
+                            console.log('not found');
+                            $http.delete('/api/docters/' + $scope.docters[k]._id, $scope.docters[k])
+                            .then(
+                                function(result){
+                                    console.log('Successfull delete')
+                                }
+                            )
+                        }
+                    }
+                };
+            };
+
+            for (i = 0; i < $scope.docterscopy.length; i++){
+                if (!$scope.docterscopy[i]._id){
+                    console.log('new');
+                    $http.post('/api/docters', $scope.docterscopy[i])
+                    .then(
+                        function(result){
+                            console.log('Successfull create')
+                        }
+                    )
+                }
+            };
+        };
+
+        $scope.saveTherapists = function(){
+            for (i = 0; i < $scope.therapists.length; i++){
+                found = false;
+                for (k = 0; k < $scope.therapistscopy.length; k++){
+                    console.log('i:',i,$scope.therapists[i]);
+                    console.log('k:',k,$scope.therapistscopy[k]);
+
+                    if ($scope.therapists[i]._id == $scope.therapistscopy[k]._id){
+                        console.log('found');
+                        found = true;
+                        $http.put('/api/therapists/' + $scope.therapistscopy[k]._id, $scope.therapistscopy[k])
+                        .then(
+                            function(result){
+                                console.log('Successfull update')
+                            }
+                        )
+                    }
+                    else{
+                        if (k + 1 == $scope.therapistscopy.length && found == false){
+                            console.log('not found');
+                            $http.delete('/api/therapists/' + $scope.therapists[i]._id, $scope.therapists[k])
+                            .then(
+                                function(result){
+                                    console.log('Successfull delete')
+                                }
+                            )
+                        }
+                    }
+                };
+            };
+
+            for (i = 0; i < $scope.therapistscopy.length; i++){
+                if (!$scope.therapistscopy[i]._id){
+                    console.log('new');
+                    $http.post('/api/therapists', $scope.therapistscopy[i])
+                    .then(
+                        function(result){
+                            console.log('Successfull create')
+                        }
+                    )
+                }
+            };
+        };
+
+    // buttons
+
+        $scope.dstart = function(id){
+            $http.patch('/api/rooms/' + id + '/dstart', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.dstop = function(id){
+            $http.patch('/api/rooms/' + id + '/dstop', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.dreset = function(id){
+            $http.patch('/api/rooms/' + id + '/dreset', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.tstart = function(id){
+            $http.patch('/api/rooms/' + id + '/tstart', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.tstop = function(id){
+            $http.patch('/api/rooms/' + id + '/tstop', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.treset = function(id){
+            $http.patch('/api/rooms/' + id + '/treset', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.sstart = function(id){
+            $http.patch('/api/rooms/' + id + '/sstart', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.sstop = function(id){
+            $http.patch('/api/rooms/' + id + '/sstop', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.sreset = function(id){
+            $http.patch('/api/rooms/' + id + '/sreset', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+        $scope.resetRoom = function(id){
+            $http.patch('/api/rooms/' + id + '/resetAll', $scope.payment)
+                .then(
+                    function(result){
+                        $scope.initview();
+                    }
+                )
+         };
+
+    // helper functions
+
+        buildrooms = function() {
+            console.log($scope.loading);
+            if ($scope.loading == 3){
+                for (r = 0; r < $scope.rooms.length; r++){
+                    if ($scope.rooms[r].docterDone){
+                        $scope.rooms[r].dtimeleft = 0;
+                    }
+                    else{
+
+                        t = moment($scope.rooms[r].docterTimeIn).add(docterDefualtTime, 'm').valueOf() - moment().valueOf();
+                        if (t < 0){
+                            $http.post('/api/rooms/' + $scope.rooms[r]._id + '/docterStop', $scope.payment)
+                            $scope.rooms[r].docterDone = true;
+                            $scope.rooms[r].dtimeleft = 0;
+                        }
+                        else{
+                            $scope.rooms[r].dtimeleft = t / 1000;
+                        }
+                    }
+
+                    if ($scope.rooms[r].therapistDone){
+                        $scope.rooms[r].ttimeleft = 0;
+                    }
+                    else{
+                        t = moment($scope.rooms[r].therapistTimeIn).add(therapistDefualtTime, 'm').valueOf() - moment().valueOf();
+                        if (t < 0){
+                            $scope.rooms[r].ttimeleft = 0;
+                        }
+                        else{
+                            $scope.rooms[r].ttimeleft = t / 1000;
+                        }
+                    }
+
+                    if ($scope.rooms[r].sisterDone){
+                        $scope.rooms[r].stimeleft = 0;
+                    }
+                    else{
+                        t = moment($scope.rooms[r].sisterTimeIn).add(sisterDefualtTime, 'm').valueOf() - moment().valueOf();
+                        if (t < 0){
+                            $scope.rooms[r].stimeleft = 0;
+                        }
+                        else{
+                            $scope.rooms[r].stimeleft = t / 1000;
+                        }
+                    }
+
+
+                    for (d = 0; d < $scope.docters.length; d++){
+                        if ($scope.rooms[r].docter == $scope.docters[d]._id){
+                            $scope.rooms[r].dname = $scope.docters[d].name;
+                            $scope.rooms[r].dcolour = $scope.docters[d].colour;
+                        }
+                    };
+
+                    for (t = 0; t < $scope.therapists.length; t++){
+                        if ($scope.rooms[r].therapist == $scope.therapists[t]._id){
+                            $scope.rooms[r].tname = $scope.therapists[t].name;
+                            $scope.rooms[r].tcolour = $scope.therapists[t].colour;
+                        }
+                    };
+                }
+            }
+        };
+
+        timeleft = function(start, increment) {
+
+            t = moment(start).add(increment, 'm').valueOf() - moment().valueOf();
+            if (t < 1000) {
+                t = 0;
+            };
+            return t;
+        };
+
+        countdown = function() {
+                for (r = 0; r < $scope.rooms.length; r++){
+                    if ($scope.rooms[r].docterDone == false){
+                        if (timeleft($scope.rooms[r].docterTimeIn, docterDefualtTime) == 0){
+                            $http.patch('/api/rooms/' + $scope.rooms[r]._id + '/dstop', $scope.payment)
+                            $scope.rooms[r].docterDone = true;
+                        }
+                    }
+
+                    if ($scope.rooms[r].therapistDone == false){
+                        if (timeleft($scope.rooms[r].therapistTimeIn, therapistDefualtTime) == 0){
+                            $http.patch('/api/rooms/' + $scope.rooms[r]._id + '/tstop', $scope.payment)
+                            $scope.rooms[r].therapistDone = true;
+                        }
+                    }
+
+                    if ($scope.rooms[r].sisterDone == false){
+
+                        if (timeleft($scope.rooms[r].sisterTimeIn, sisterDefualtTime) == 0){
+                            $http.patch('/api/rooms/' + $scope.rooms[r]._id + '/sstop', $scope.payment)
+                            $scope.rooms[r].sisterDone = true;
+                        }
+                    }
+                }
+        };
+
+        $scope.setModelOptions = function(id){
+            console.log(id);
+            getRoom(id);
+        }
+
+        $scope.doctherChange = function(){
+            $scope.room.docterStart = false;
+            $scope.room.docterDone = false;
+            $scope.room.therapistStart = false;
+            $scope.room.therapistDone = false;
+            $scope.room.sisterStart = false;
+            $scope.room.sisterDone = false;
+        };
+
+    // timer specific
+
+        $scope.$on('timer-tick', function (event, args) {
+            countdown();
+        });
+
+    // Settings
+
+        $scope.addd = function(){
+            $scope.docterscopy.push({});
+        };
+
+        $scope.removed = function(id) {
+            $scope.docterscopy.splice(id,1);
+        };
+
+        $scope.addt = function(){
+            $scope.therapistscopy.push({});
+        };
+
+        $scope.removet = function(id) {
+            $scope.therapistscopy.splice(id,1);
+        };
+
+        $scope.create = function (){
+            $http.post('/api/rooms',{})
+                .then(function(response) {
+                    console.log(response);
+                }, function(err) {
+                    console.error(err);
+                });
+        };
+
+    // Initialize
+
+        $scope.initmanage = function (){
+            $scope.loading = 0;
+            getDocters();
+            getTherapists();
+            getRooms();
+            pageurl = "/rooms/view";
+        };
+
+        $scope.initview = function (){
+            $scope.loading = 0;
+            getDocters();
+            getTherapists();
+            getRooms();
+        };
+
+        $scope.initdocters = function(){
+            $scope.loading = 0;
+            getDocters();
+        };
+
+        $scope.inittherapists = function(){
+            $scope.loading = 0;
+            getTherapists();
+        };
+ });
+
+myModule.controller('nav-ctrl', function($scope, $http, $window) {
+    $scope.loading = 0;
+    $scope.error = '';
+
+    $scope.pageurl = "/rooms/view";
+
+    // buttons
+
+    $scope.changepage = function(url){
+        // $scope.currentProjectUrl = $sce.trustAsResourceUrl($scope.currentProject.url);
+        $scope.pageurl = url;
+    };
+
+    // timer specific
+
+        $scope.$on('timer-tick', function (event, args) {
+            countdown();
+        });
+
+    // Initialize
+
+        $scope.initnav = function (){
+            $scope.loading = false;
+            pageurl = "/rooms/view";
+        };
+ });

@@ -1,0 +1,38 @@
+extends ../layouts/master-navigation
+include ../../mixins/mixins
+
+block content
+    form(id='therapistManage', ng-controller='rooms-ctrl', ng-init='inittherapists()')
+        .row
+            .col-md-2.col-sm-1
+            .col-md-8.col-sm-10
+                .grouphead
+                    h4 Manage Therapists
+                .groupbox
+                    table.table.table-hover.table-responsive(id="therpist-table" st-table='therapistscopy')
+                        thead
+                            tr
+                                th
+                                th Name
+                                th Colour
+
+                        tbody
+                            tr(ng-repeat="row in therapistscopy | orderBy : 'name'")
+                                td
+                                    input.btn.btn-warning(type="button", value='Remove', ng-click='removet($index)')
+                                td
+                                    +ng-input-text-min('tname', 'row.name', 'Add the therapists name', false, false)
+                                td
+                                    +ng-input-color-min('tcolour', 'row.colour', 'Add a colour for the therapist', false, false)
+                            tr
+                                td
+                                    input.btn.btn-success(type="button", value='Add', ng-click='addt()')
+
+        br
+        .row
+            .col-md-2.col-sm-1
+            .col-md-8.col-sm-10
+                .form-group
+                    ul.nav.nav-pills.pull-right
+                        li(role='presentation')
+                            input.btn.btn-primary(type="button", value="Save", ng-click='saveTherapists()')
