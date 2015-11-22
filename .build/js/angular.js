@@ -323,8 +323,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
 
                         t = moment($scope.rooms[r].docterTimeIn).add($scope.rooms[r].docterDuration, 'm').valueOf() - moment().valueOf();
                         if (t < 0){
-                            $http.post('/api/rooms/' + $scope.rooms[r]._id + '/docterStop', $scope.room)
-                            $scope.rooms[r].docterDone = true;
+                            // $http.post('/api/rooms/' + $scope.rooms[r]._id + '/docterStop', $scope.room)
+                            // $scope.rooms[r].docterDone = true;
                             $scope.rooms[r].dtimeleft = 0;
                         }
                         else{
@@ -437,7 +437,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             // alert('referesh');
         };
 
-        $interval(refreshPage, 10000);
+        $interval(refreshPage, 15000);
 
         $scope.$on('timer-tick', function (event, args) {
             countdown();
@@ -484,7 +484,6 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
 
         $scope.initview = function (){
             allowRefresh = true;
-            lastrefresh = moment();
             $scope.loading = 0;
             getDocters();
             getTherapists();
