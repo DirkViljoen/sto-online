@@ -1,4 +1,4 @@
-extends ../layouts/master-content
+extends ../layouts/master-navigation
 include ../../mixins/mixins
 
 block content
@@ -10,51 +10,60 @@ block content
                     thead
                         tr
                             th Room
+                            th Group
                             th Docter assigned
                             th Therapist assigned
-                            th Sister
 
                     tbody
                         tr(ng-repeat="row in rooms | orderBy:'name'")
-                            td {{row.name}}
+                            td
+                                +ng-input-text('rName', 'Room name', 'row.name', 'Add a name for the room', false, false)
+                            td
+                                +ng-input-text('rGroup', 'Room group', 'row.group', 'Add the room to a group', false, false)
                             td
                                 .form-group
                                     ul.nav.nav-pills
                                         li
                                             +ng-input-combobox-min('doc', 'row.docter', 'Select a docter', 'docter._id as docter.name for docter in docters', false, false)
-                                        li
-                                            &nbsp;
-                                        li(role='presentation')
-                                            input.btn.btn-primary(type="button", value="Start", ng-click='dstart(row._id)')
-                                        li(role='presentation')
-                                            input.btn.btn-default(type="button", value='Stop', ng-click='dstop(row._id)')
-                                        li(role='presentation')
-                                            input.btn.btn-default(type="button", value='Reset', ng-click='dreset(row._id)')
                             td
                                 .form-group
                                     ul.nav.nav-pills
                                         li
                                             +ng-input-combobox-min('ther', 'row.therapist', 'Select a therapist', 'ther._id as ther.name for ther in therapists', false, false)
-                                        li
-                                            &nbsp;
-                                        li(role='presentation')
-                                            input.btn.btn-primary(type="button", value="Start", ng-click='tstart(row._id)')
-                                        li(role='presentation')
-                                            input.btn.btn-default(type="button", value='Stop', ng-click='tstop(row._id)')
-                                        li(role='presentation')
-                                            input.btn.btn-default(type="button", value='Reset', ng-click='treset(row._id)')
 
-                            td
-                                .form-group
-                                    ul.nav.nav-pills
-                                        li(role='presentation')
-                                            input.btn.btn-primary(type="button", value="Start", ng-click='sstart(row._id)')
-                                        li(role='presentation')
-                                            input.btn.btn-default(type="button", value='Stop', ng-click='sstop(row._id)')
-                                        li(role='presentation')
-                                            input.btn.btn-default(type="button", value='Reset', ng-click='sreset(row._id)')
-
-
-        p {{docters}}
-        p {{therapists}}
         p {{rooms}}
+        .row
+            .col-md-2.col-sm-1
+            .col-md-8.col-sm-10
+                .grouphead
+                    h4 Manage Rooms
+                .groupbox
+                    table.table.table-hover.table-responsive(id="rooms-table" st-table='roomscopy')
+                        thead
+                            tr
+                                th
+                                th Name
+                                th Colour
+
+                        tbody
+                            tr(ng-repeat="row in docterscopy | orderBy : 'name'")
+                                td
+                                    input.btn.btn-warning(type="button", value='Remove', ng-click='removed($index)')
+                                td
+                                    +ng-input-text-min('dname', 'row.name', 'Add the docters name', false, false)
+                                td
+                                    +ng-input-color-min('dcolour', 'row.colour', 'Add a colour for the docter', false, false)
+                            tr
+                                td
+                                    input.btn.btn-success(type="button", value='Add', ng-click='addd()')
+                                td
+                                td
+
+        br
+        .row
+            .col-md-2.col-sm-1
+            .col-md-8.col-sm-10
+                .form-group
+                    ul.nav.nav-pills.pull-right
+                        li(role='presentation')
+                            input.btn.btn-primary(type="button", value="Save", ng-click='saveDocters()')

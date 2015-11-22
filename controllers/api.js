@@ -225,9 +225,12 @@ module.exports = function (router) {
 
                 var msg = '';
 
+                console.log(req.body);
+
                 switch(req.params.action) {
                     case 'dstart':
                         room.docterTimeIn = moment();
+                        room.docterDuration = req.body.docterDuration ? req.body.docterDuration : 20;
                         room.docterStart = true;
                         room.docterDone = false;
                         msg = 'docter started.';
@@ -243,6 +246,7 @@ module.exports = function (router) {
                         break;
                     case 'tstart':
                         room.therapistTimeIn = moment();
+                        room.therapistDuration = req.body.therapistDuration ? req.body.therapistDuration : 20;
                         room.therapistStart = true;
                         room.therapistDone = false;
                         msg = 'therapist started';
@@ -258,6 +262,7 @@ module.exports = function (router) {
                         break;
                     case 'sstart':
                         room.sisterTimeIn = moment();
+                        room.sisterDuration = req.body.sisterDuration ? req.body.sisterDuration : 5;
                         room.sisterStart = true;
                         room.sisterDone = false;
                         msg = 'sister started';

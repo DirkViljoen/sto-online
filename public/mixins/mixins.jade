@@ -46,6 +46,9 @@ mixin ng-input-text-alt(name, label, model, placeholder, required, readonly, min
 mixin ng-input-text-min(name, model, placeholder, required, readonly, minLen, maxLen, changeEvent, blurEvent)
     input.form-control(type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, minlength=minLen, maxlength=maxLen size='40', ng-change=changeEvent, ng-blur=blurEvent)
 
+mixin ng-input-number-min(name, model, placeholder, required, readonly, minimum, maximum, changeEvent, blurEvent)
+    input.form-control(type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, min=minimum, max=maximum size='40', ng-change=changeEvent, ng-blur=blurEvent)
+
 mixin ng-input-color-min(name, model, placeholder, required, readonly, changeEvent, blurEvent)
     input.form-control(type='color', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required size='40', ng-change=changeEvent, ng-blur=blurEvent)
 
