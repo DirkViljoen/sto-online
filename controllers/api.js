@@ -45,7 +45,8 @@ module.exports = function (router) {
                 if (err){
                     res.send(err);
                 }
-                else{
+                else
+                {
                     res.json({ message: 'Docter created!' });
                 }
             });
@@ -53,19 +54,22 @@ module.exports = function (router) {
 
         router.put('/docters/:id', function(req, res) {
             doctermodel.findById(req.params.id, function(err, doc) {
-                if (err)
+                if (err){
                     res.send(err);
+                }
+                else
+                {
+                    console.log(doc);
+                    doc.name = req.body.name;
+                    doc.colour = req.body.colour;
+                    // save the bear
+                    doc.save(function(err) {
+                        if (err)
+                            res.send(err);
 
-                doc.name = req.body.name;
-                doc.colour = req.body.colour;
-                // save the bear
-                doc.save(function(err) {
-                    if (err)
-                        res.send(err);
-
-                    res.json({ message: 'Docter updated!' });
-                });
-
+                        res.json({ message: 'Docter updated!' });
+                    });
+                }
             });
          });
 

@@ -17,7 +17,7 @@ block content
                                 th Colour
 
                         tbody
-                            tr(ng-repeat="row in docterscopy | orderBy : 'name'")
+                            tr(ng-repeat="row in docterscopy")
                                 td
                                     input.btn.btn-warning(type="button", value='Remove', ng-click='removed($index)')
                                 td

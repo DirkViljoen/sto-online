@@ -157,6 +157,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                     )
                 }
             };
+
+            // $window.location.href = '/rooms/view';
         };
 
         $scope.saveTherapists = function(){
@@ -451,6 +453,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
         };
 
         $scope.removed = function(id) {
+            // console.log($scope.docterscopy[id]);
             $scope.docterscopy.splice(id,1);
         };
 
