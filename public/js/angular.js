@@ -431,7 +431,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
 
         function refreshPage() {
             if (allowRefresh){
-                $scope.initview();
+                $scope.loading = 2;
+                getRooms();
                 console.log('refresh!');
             }
             // alert('referesh');
