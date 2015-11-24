@@ -1,0 +1,334 @@
+extends ../layouts/master-navigation
+include ../../mixins/mixins
+
+block content
+    form(id='RoomView', ng-controller='rooms-ctrl', ng-init='initview()')
+        .row
+            .col-sm-2
+                div(ng-repeat='row in rooms | orderBy:"name" | filter:row.group="group A"')
+                    div.room(data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(row._id)", style='background-color:{{row.dcolour}}')
+                        h3 {{row.name}}
+                        .row
+                            .col-md-7
+                                h6 {{row.dname}}
+                            .col-md-5
+                                h6(ng-if='row.docterDone==true && row.docterStart==true') Done
+                                h6(ng-if='row.docterDone==false && row.docterStart==false') NS
+                                h6(ng-if='row.docterDone==false && row.docterStart==true')
+                                    timer(countdown='row.dtimeleft' interval="1000")
+                                        span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-sm-12
+                                    span {{row.patient}}
+
+                        div.therapist(style='background-color:{{row.tcolour}}')
+                            .row
+                                .col-md-7
+                                    span {{row.tname}}
+                                .col-md-5
+                                    div(ng-if='row.therapistDone==true && row.therapistStart==true') Done
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==false') NS
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==true')
+                                        timer(countdown='row.ttimeleft' interval="1000")
+                                            span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-md-7
+                                    span sister
+                                .col-md-5
+                                    div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
+
+                    br
+            .col-sm-2
+                div(ng-repeat='row in rooms | orderBy:"name" | filter:row.group="group B"')
+                    div.room(data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(row._id)", style='background-color:{{row.dcolour}}')
+                        h3 {{row.name}}
+                        .row
+                            .col-md-7
+                                h6 {{row.dname}}
+                            .col-md-5
+                                h6(ng-if='row.docterDone==true && row.docterStart==true') Done
+                                h6(ng-if='row.docterDone==false && row.docterStart==false') NS
+                                h6(ng-if='row.docterDone==false && row.docterStart==true')
+                                    timer(countdown='row.dtimeleft' interval="1000")
+                                        span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-sm-12
+                                    span {{row.patient}}
+
+                        div.therapist(style='background-color:{{row.tcolour}}')
+                            .row
+                                .col-md-7
+                                    span {{row.tname}}
+                                .col-md-5
+                                    div(ng-if='row.therapistDone==true && row.therapistStart==true') Done
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==false') NS
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==true')
+                                        timer(countdown='row.ttimeleft' interval="1000")
+                                            span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-md-7
+                                    span sister
+                                .col-md-5
+                                    div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
+
+                    br
+            .col-sm-2
+                div(ng-repeat='row in rooms | orderBy:"name" | filter:row.group="group C"')
+                    div.room(data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(row._id)", style='background-color:{{row.dcolour}}')
+                        h3 {{row.name}}
+                        .row
+                            .col-md-7
+                                h6 {{row.dname}}
+                            .col-md-5
+                                h6(ng-if='row.docterDone==true && row.docterStart==true') Done
+                                h6(ng-if='row.docterDone==false && row.docterStart==false') NS
+                                h6(ng-if='row.docterDone==false && row.docterStart==true')
+                                    timer(countdown='row.dtimeleft' interval="1000")
+                                        span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-sm-12
+                                    span {{row.patient}}
+
+                        div.therapist(style='background-color:{{row.tcolour}}')
+                            .row
+                                .col-md-7
+                                    span {{row.tname}}
+                                .col-md-5
+                                    div(ng-if='row.therapistDone==true && row.therapistStart==true') Done
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==false') NS
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==true')
+                                        timer(countdown='row.ttimeleft' interval="1000")
+                                            span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-md-7
+                                    span sister
+                                .col-md-5
+                                    div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
+
+                    br
+            .col-sm-2
+                div(ng-repeat='row in rooms | orderBy:"name" | filter:row.group="group D"')
+                    div.room(data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(row._id)", style='background-color:{{row.dcolour}}')
+                        h3 {{row.name}}
+                        .row
+                            .col-md-7
+                                h6 {{row.dname}}
+                            .col-md-5
+                                h6(ng-if='row.docterDone==true && row.docterStart==true') Done
+                                h6(ng-if='row.docterDone==false && row.docterStart==false') NS
+                                h6(ng-if='row.docterDone==false && row.docterStart==true')
+                                    timer(countdown='row.dtimeleft' interval="1000")
+                                        span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-sm-12
+                                    span {{row.patient}}
+
+                        div.therapist(style='background-color:{{row.tcolour}}')
+                            .row
+                                .col-md-7
+                                    span {{row.tname}}
+                                .col-md-5
+                                    div(ng-if='row.therapistDone==true && row.therapistStart==true') Done
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==false') NS
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==true')
+                                        timer(countdown='row.ttimeleft' interval="1000")
+                                            span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-md-7
+                                    span sister
+                                .col-md-5
+                                    div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
+
+                    br
+            .col-sm-2
+                div(ng-repeat='row in rooms | orderBy:"name" | filter:row.group="group E"')
+                    div.room(data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(row._id)", style='background-color:{{row.dcolour}}')
+                        h3 {{row.name}}
+                        .row
+                            .col-md-7
+                                h6 {{row.dname}}
+                            .col-md-5
+                                h6(ng-if='row.docterDone==true && row.docterStart==true') Done
+                                h6(ng-if='row.docterDone==false && row.docterStart==false') NS
+                                h6(ng-if='row.docterDone==false && row.docterStart==true')
+                                    timer(countdown='row.dtimeleft' interval="1000")
+                                        span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-sm-12
+                                    span {{row.patient}}
+
+                        div.therapist(style='background-color:{{row.tcolour}}')
+                            .row
+                                .col-md-7
+                                    {{row.tname}}
+                                .col-md-5
+                                    div(ng-if='row.therapistDone==true && row.therapistStart==true') Done
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==false') NS
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==true')
+                                        timer(countdown='row.ttimeleft' interval="1000")
+                                            span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-md-7
+                                    span sister
+                                .col-md-5
+                                    div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
+
+                    br
+            .col-sm-2
+                div(ng-repeat='row in rooms | orderBy:"name" | filter:row.group="group F"')
+                    div.room(data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(row._id)", style='background-color:{{row.dcolour}}')
+                        h3 {{row.name}}
+                        .row
+                            .col-md-7
+                                h6 {{row.dname}}
+                            .col-md-5
+                                h6(ng-if='row.docterDone==true && row.docterStart==true') Done
+                                h6(ng-if='row.docterDone==false && row.docterStart==false') NS
+                                h6(ng-if='row.docterDone==false && row.docterStart==true')
+                                    timer(countdown='row.dtimeleft' interval="1000")
+                                        span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-sm-12
+                                    span {{row.patient}}
+
+                        div.therapist(style='background-color:{{row.tcolour}}')
+                            .row
+                                .col-md-7
+                                    span {{row.tname}}
+                                .col-md-5
+                                    div(ng-if='row.therapistDone==true && row.therapistStart==true') Done
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==false') NS
+                                    div(ng-if='row.therapistDone==false && row.therapistStart==true')
+                                        timer(countdown='row.ttimeleft' interval="1000")
+                                            span {{mminutes}}:{{sseconds}}
+
+                        div.sister(style='background-color:#FFF')
+                            .row
+                                .col-md-7
+                                    span sister
+                                .col-md-5
+                                    div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
+
+                    br
+
+        .modal.fade#manageRoom
+            .modal-dialog
+                .modal-content.form-group.form-horizontal
+                    .modal-header
+                        h4.modal-title Manage {{room.name}}
+                    .modal-body
+                        +ng-input-text('rName', 'Room name', 'room.name', 'Add a name for the room', true, false)
+                        +ng-input-text('rGroup', 'Room group', 'room.group', 'Add the room to a group', false, false)
+                        .grouphead
+                            h5
+                                div(ng-if='room.docterDone==true && room.docterStart==true') Docter - Done
+                                div(ng-if='room.docterDone==false && room.docterStart==false') Docter - NS
+                                div(ng-if='room.docterDone==false && room.docterStart==true') Docter - Busy
+                        .groupbox
+                            .form-group
+                                .row
+                                    .col-sm-5
+                                        +ng-input-combobox-min('doc', 'room.docter', 'Select a docter', 'docter._id as docter.name for docter in docters', false, false, 'doctherChange()')
+                                    .col-sm-2
+                                        +ng-input-combobox-min('docDuration', 'room.docterDuration', 'Select a duration', 'o as o for o in intervals.docters', false, false)
+                                    .col-sm-5
+                                        ul.nav.nav-pills
+                                            li(role='presentation', ng-if='room.docterDone==true || room.docterStart==false')
+                                                input.btn.btn-success(type="button", value="Start", ng-click='dstart(room._id)', data-dismiss="modal")
+                                            li(role='presentation', ng-if='room.docterDone==false && room.docterStart==true')
+                                                input.btn.btn-danger(type="button", value='Stop', ng-click='dstop(room._id)', data-dismiss="modal")
+                                            li(role='presentation', ng-if='room.docterDone==true || room.docterStart==true')
+                                                input.btn.btn-default(type="button", value='Reset', ng-click='dreset(room._id)', data-dismiss="modal")
+                        br
+                        .grouphead
+                            h5 Patient
+                        .groupbox
+                            .form-group
+                                .row
+                                    .col-sm-7
+                                        +ng-input-text-min('pname', 'room.patient', 'Add the patients name', false, false)
+
+                        br
+                        .grouphead
+                            h5
+                                div(ng-if='room.therapistDone==true && room.therapistStart==true') Therapist - Done
+                                div(ng-if='room.therapistDone==false && room.therapistStart==false') Therapist - NS
+                                div(ng-if='room.therapistDone==false && room.therapistStart==true') Therapist - Busy
+                        .groupbox
+                            .form-group
+                                .row
+                                    .col-sm-5
+                                        +ng-input-combobox-min('doc', 'room.therapist', 'Select a therapist', 'ther._id as ther.name for ther in therapists', false, false, 'doctherChange()')
+                                    .col-sm-2
+                                        +ng-input-combobox-min('therDuration', 'room.therapistDuration', 'Select a duration', 'o as o for o in intervals.therapists', false, false)
+                                    .col-sm-5
+                                        ul.nav.nav-pills
+                                            li(role='presentation', ng-if='room.therapistDone==true || room.therapistStart==false')
+                                                input.btn.btn-success(type="button", value="Start", ng-click='tstart(room._id)', data-dismiss="modal")
+                                            li(role='presentation', ng-if='room.therapistDone==false && room.therapistStart==true')
+                                                input.btn.btn-danger(type="button", value='Stop', ng-click='tstop(room._id)', data-dismiss="modal")
+                                            li(role='presentation', ng-if='room.therapistDone==true || room.therapistStart==true')
+                                                input.btn.btn-default(type="button", value='Reset', ng-click='treset(room._id)', data-dismiss="modal")
+                        br
+                        .grouphead
+                            h5
+                                div(ng-if='room.sisterDone==true && room.sisterStart==true') Sister - Done
+                                div(ng-if='room.sisterDone==false && room.sisterStart==false') Sister - NS
+                                div(ng-if='room.sisterDone==false && room.sisterStart==true') Sister - Busy
+                        .groupbox
+                            .form-group
+                                .row
+                                    .col-sm-5
+                                    .col-sm-2
+                                        //- +ng-input-combobox-min('sisterDuration', 'room.sisterDuration', 'Select a duration', 'o as o for o in intervals.sisters', false, false)
+                                    .col-sm-5
+                                        ul.nav.nav-pills
+                                            li(role='presentation', ng-if='room.sisterDone==true || room.sisterStart==false')
+                                                input.btn.btn-success(type="button", value="Start", ng-click='sstart(room._id)', data-dismiss="modal")
+                                            li(role='presentation', ng-if='room.sisterDone==false && room.sisterStart==true')
+                                                input.btn.btn-danger(type="button", value='Stop', ng-click='sstop(room._id)', data-dismiss="modal")
+                                            li(role='presentation', ng-if='room.sisterDone==true || room.sisterStart==true')
+                                                input.btn.btn-default(type="button", value='Reset', ng-click='sreset(room._id)', data-dismiss="modal")
+                        br
+                    .modal-footer
+                        ul.nav.nav-pills.pull-right
+                            li(role='presentation')
+                                input.btn.btn-primary(type="button", value="Save", ng-click='saveRoom()', data-dismiss="modal")
+                            li(role='presentation')
+                                input.btn.btn-default(type="button", value="Reset room", ng-click='resetRoom(room._id)', data-dismiss="modal")
+
+
