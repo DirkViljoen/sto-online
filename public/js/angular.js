@@ -272,17 +272,18 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.sstart = function(id){
-            if ($scope.room.sisterDuration){
+            // if ($scope.room.sisterDuration){
+                $scope.room.sisterDuration = 180;
                 $http.patch('/api/rooms/' + id + '/sstart', $scope.room)
                     .then(
                         function(result){
                             $scope.initview();
                         }
                     )
-            }
-            else {
-                alert('Please choose a duration before pressing start.');
-            }
+            // }
+            // else {
+            //     alert('Please choose a duration before pressing start.');
+            // }
          };
 
         $scope.sstop = function(id){
@@ -304,6 +305,12 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.resetRoom = function(id){
+            $scope.room.docterStart = false;
+            $scope.room.docterDone = false;
+            $scope.room.therapistStart = false;
+            $scope.room.therapistDone = false;
+            $scope.room.sisterStart = false;
+            $scope.room.sisterDone = false;
             $http.patch('/api/rooms/' + id + '/resetAll', $scope.room)
                 .then(
                     function(result){

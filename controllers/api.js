@@ -287,6 +287,18 @@ module.exports = function (router) {
                         room.therapistDone = false;
                         room.sisterStart = false;
                         room.sisterDone = false;
+                        room.docter = null;
+                        // room.docterTimeIn = req.body.dtime;
+                        // room.docterStart = req.body.docterStart;
+                        // room.docterDone = req.body.docterDone;
+                        room.therapist = null;
+                        // room.therapistTimeIn = req.body.ttime;
+                        // room.therapistStart = req.body.therapistStart;
+                        // room.therapistDone = req.body.therapistDone;
+                        // room.sisterTimeIn = req.body.stime
+                        // room.sisterStart = req.body.sisterStart;
+                        // room.sisterDone = req.body.sisterDone;
+                        room.patient = "";
                         msg = 'All reset';
                         break;
                     default:

@@ -41,9 +41,7 @@ block content
                                 .col-md-5
                                     div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
                                     div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
-                                    div(ng-if='row.sisterDone==false && row.sisterStart==true')
-                                        timer(countdown='row.stimeleft' interval="1000")
-                                            span {{mminutes}}:{{sseconds}}
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
 
                     br
             .col-sm-2
@@ -83,9 +81,7 @@ block content
                                 .col-md-5
                                     div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
                                     div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
-                                    div(ng-if='row.sisterDone==false && row.sisterStart==true')
-                                        timer(countdown='row.stimeleft' interval="1000")
-                                            span {{mminutes}}:{{sseconds}}
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
 
                     br
             .col-sm-2
@@ -125,9 +121,7 @@ block content
                                 .col-md-5
                                     div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
                                     div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
-                                    div(ng-if='row.sisterDone==false && row.sisterStart==true')
-                                        timer(countdown='row.stimeleft' interval="1000")
-                                            span {{mminutes}}:{{sseconds}}
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
 
                     br
             .col-sm-2
@@ -167,9 +161,7 @@ block content
                                 .col-md-5
                                     div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
                                     div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
-                                    div(ng-if='row.sisterDone==false && row.sisterStart==true')
-                                        timer(countdown='row.stimeleft' interval="1000")
-                                            span {{mminutes}}:{{sseconds}}
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
 
                     br
             .col-sm-2
@@ -209,9 +201,7 @@ block content
                                 .col-md-5
                                     div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
                                     div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
-                                    div(ng-if='row.sisterDone==false && row.sisterStart==true')
-                                        timer(countdown='row.stimeleft' interval="1000")
-                                            span {{mminutes}}:{{sseconds}}
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
 
                     br
             .col-sm-2
@@ -251,9 +241,7 @@ block content
                                 .col-md-5
                                     div(ng-if='row.sisterDone==true && row.sisterStart==true') Done
                                     div(ng-if='row.sisterDone==false && row.sisterStart==false') NS
-                                    div(ng-if='row.sisterDone==false && row.sisterStart==true')
-                                        timer(countdown='row.stimeleft' interval="1000")
-                                            span {{mminutes}}:{{sseconds}}
+                                    div(ng-if='row.sisterDone==false && row.sisterStart==true') Busy
 
                     br
 
@@ -263,13 +251,12 @@ block content
                     .modal-header
                         h4.modal-title Manage {{room.name}}
                     .modal-body
-                        +ng-input-text('rName', 'Room name', 'room.name', 'Add a name for the room', true, false)
-                        +ng-input-text('rGroup', 'Room group', 'room.group', 'Add the room to a group', false, false)
                         .grouphead
                             h5
-                                div(ng-if='room.docterDone==true && room.docterStart==true') Docter - Done
-                                div(ng-if='room.docterDone==false && room.docterStart==false') Docter - NS
-                                div(ng-if='room.docterDone==false && room.docterStart==true') Docter - Busy
+                                span Docter&nbsp;
+                                span(ng-if='room.docterDone==true && room.docterStart==true') - Done
+                                span(ng-if='room.docterDone==false && room.docterStart==false') - NS
+                                span(ng-if='room.docterDone==false && room.docterStart==true') - Busy
                         .groupbox
                             .form-group
                                 .row
@@ -297,9 +284,10 @@ block content
                         br
                         .grouphead
                             h5
-                                div(ng-if='room.therapistDone==true && room.therapistStart==true') Therapist - Done
-                                div(ng-if='room.therapistDone==false && room.therapistStart==false') Therapist - NS
-                                div(ng-if='room.therapistDone==false && room.therapistStart==true') Therapist - Busy
+                                span Therapist&nbsp;
+                                span(ng-if='room.therapistDone==true && room.therapistStart==true') - Done
+                                span(ng-if='room.therapistDone==false && room.therapistStart==false') - NS
+                                span(ng-if='room.therapistDone==false && room.therapistStart==true') - Busy
                         .groupbox
                             .form-group
                                 .row
@@ -318,15 +306,16 @@ block content
                         br
                         .grouphead
                             h5
-                                div(ng-if='room.sisterDone==true && room.sisterStart==true') Sister - Done
-                                div(ng-if='room.sisterDone==false && room.sisterStart==false') Sister - NS
-                                div(ng-if='room.sisterDone==false && room.sisterStart==true') Sister - Busy
+                                span Sister&nbsp;
+                                span(ng-if='room.sisterDone==true && room.sisterStart==true') - Done
+                                span(ng-if='room.sisterDone==false && room.sisterStart==false') - NS
+                                span(ng-if='room.sisterDone==false && room.sisterStart==true') - Busy
                         .groupbox
                             .form-group
                                 .row
                                     .col-sm-5
                                     .col-sm-2
-                                        +ng-input-combobox-min('sisterDuration', 'room.sisterDuration', 'Select a duration', 'o as o for o in intervals.sisters', false, false)
+                                        //- +ng-input-combobox-min('sisterDuration', 'room.sisterDuration', 'Select a duration', 'o as o for o in intervals.sisters', false, false)
                                     .col-sm-5
                                         ul.nav.nav-pills
                                             li(role='presentation', ng-if='room.sisterDone==true || room.sisterStart==false')
@@ -341,6 +330,6 @@ block content
                             li(role='presentation')
                                 input.btn.btn-primary(type="button", value="Save", ng-click='saveRoom()', data-dismiss="modal")
                             li(role='presentation')
-                                input.btn.btn-default(type="button", value="Reset room times", ng-click='resetRoom(room._id)', data-dismiss="modal")
+                                input.btn.btn-default(type="button", value="Reset room", ng-click='resetRoom(room._id)', data-dismiss="modal")
 
 
