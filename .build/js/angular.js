@@ -119,6 +119,10 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                 )
          };
 
+        $scope.saveRooms = function(){
+            saveSuccess('Rooms updated successfully');
+        };
+
         $scope.updateRoom = function(){
             if ($scope.room._id){
                 $http.put('/api/rooms/' + $scope.room._id, $scope.room)
@@ -224,7 +228,6 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.saveDoctors = function(){
-
             var total = $scope.doctors.length;
             if ($scope.doctors_old){
                 total += $scope.doctors_old.length;
@@ -239,7 +242,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             for (var n = 0; n < $scope.doctors.length; n++){
                 if ($scope.doctors[n]._id){
                     // put
-                    $http.put('/api/doctors/' + $scope.room._id, $scope.doctors[n])
+                    $http.put('/api/doctors/' + $scope.doctors[n]._id, $scope.doctors[n])
                         .then(
                             function(result){
                                 sum++;
@@ -283,53 +286,61 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.saveTherapists = function(){
-            for (i = 0; i < $scope.therapists.length; i++){
-                found = false;
-                for (k = 0; k < $scope.therapistscopy.length; k++){
-                    console.log('i:',i,$scope.therapists[i]);
-                    console.log('k:',k,$scope.therapistscopy[k]);
+            var total = $scope.therapists.length;
+            if ($scope.therapists_old){
+                total += $scope.therapists_old.length;
+            }
+            var sum = 0;
 
-                    if ($scope.therapists[i]._id == $scope.therapistscopy[k]._id){
-                        console.log('found');
-                        found = true;
-                        $http.put('/api/therapists/' + $scope.therapistscopy[k]._id, $scope.therapistscopy[k])
+            if (total == 0){
+                saveSuccess();
+            }
+
+            // Add & update therapists
+            for (var n = 0; n < $scope.therapists.length; n++){
+                if ($scope.therapists[n]._id){
+                    // put
+                    $http.put('/api/therapists/' + $scope.therapists[n]._id, $scope.therapists[n])
                         .then(
                             function(result){
-                                console.log('Successfull update')
+                                sum++;
+                                if (sum == total){
+                                    saveSuccess('Therapists updated successfully');
+                                }
                             }
                         )
-                    }
-                    else{
-                        if (k + 1 == $scope.therapistscopy.length && found == false){
-                            console.log('not found');
-                            $http.delete('/api/therapists/' + $scope.therapists[i]._id, $scope.therapists[k])
+                }
+                else{
+                    //post
+                    $http.post('/api/therapists', $scope.therapists[n])
+                        .then(
+                            function(result){
+                                sum++;
+                                if (sum == total){
+                                    saveSuccess('Therapists updated successfully');
+                                }
+                            }
+                        )
+                }
+            }
+
+            //Delete therapists
+            if ($scope.therapists_old){
+                for (var o = 0; o < $scope.therapists_old.length; o++){
+                    if ($scope.therapists_old[o]._id){
+                        // put
+                        $http.delete('/api/therapists/' + $scope.therapists_old[o]._id, $scope.therapists_old[o])
                             .then(
                                 function(result){
-                                    console.log('Successfull delete')
+                                    sum++;
+                                    if (sum == total){
+                                        saveSuccess('Therapists updated successfully');
+                                    }
                                 }
                             )
-                        }
                     }
-                };
-            };
-
-            for (i = 0; i < $scope.therapistscopy.length; i++){
-                if (!$scope.therapistscopy[i]._id){
-                    console.log('new');
-                    $http.post('/api/therapists', $scope.therapistscopy[i])
-                    .then(
-                        function(result){
-                            console.log('Successfull create')
-                        }
-                    )
                 }
-            };
-
-            // BootstrapDialog.alert('I want banana!');
-            alert('Therapists updated successfully');
-            // dialog_info_Ok('Title','Message', function(){
-                $window.location.href = '/rooms/view';
-            // });
+            }
          };
 
         saveSuccess = function(message){
@@ -608,11 +619,11 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
         };
 
         $scope.addTherapist = function(){
-            $scope.therapistscopy.push({});
+            $scope.therapists.push({});
         };
 
         $scope.removeTherapist = function(therapist) {
-            $scope.therapistscopy.splice(id,1);
+            $scope.therapistscopy.splice(therapist,1);
 
             var i = $scope.therapists.indexOf(therapist);
             if (!$scope.therapists_old){

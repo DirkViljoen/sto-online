@@ -9,7 +9,7 @@ block content
                 .grouphead
                     h4 Manage Therapists
                 .groupbox
-                    table.table.table-hover.table-responsive(id="therpist-table" st-table='therapistscopy')
+                    table.table.table-hover.table-responsive(id="therpist-table" st-table='therapists')
                         thead
                             tr
                                 th
@@ -17,16 +17,16 @@ block content
                                 th Colour
 
                         tbody
-                            tr(ng-repeat="row in therapistscopy")
+                            tr(ng-repeat="therapist in therapists")
                                 td
-                                    input.btn.btn-warning(type="button", value='Remove', ng-click='removet($index)')
+                                    input.btn.btn-warning(type="button", value='Remove', ng-click='removeTherapist(therapist)')
                                 td
-                                    +ng-input-text-min('tname', 'row.name', 'Add the therapists name', false, false)
+                                    +ng-input-text-min('tname', 'therapist.name', 'Add the therapists name', false, false)
                                 td
-                                    +ng-input-color-min('tcolour', 'row.colour', 'Add a colour for the therapist', false, false)
+                                    +ng-input-color-min('tcolour', 'therapist.colour', 'Add a colour for the therapist', false, false)
                             tr
                                 td
-                                    input.btn.btn-success(type="button", value='Add', ng-click='addt()')
+                                    input.btn.btn-success(type="button", value='Add', ng-click='addTherapist()')
 
         br
         .row
