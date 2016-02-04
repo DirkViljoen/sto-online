@@ -1,0 +1,40 @@
+extends ../layouts/master-navigation
+include ../../mixins/mixins
+
+block content
+    form(id='doctorsManage', ng-controller='rooms-ctrl', ng-init='initdoctors()')
+        .row
+            .col-md-2.col-sm-1
+            .col-md-8.col-sm-10
+                .grouphead
+                    h4 Manage Doctors
+                .groupbox
+                    table.table.table-hover.table-responsive(id="doctors-table" st-table='doctors')
+                        thead
+                            tr
+                                th
+                                th Name
+                                th Colour
+
+                        tbody
+                            tr(ng-repeat="doctor in doctors")
+                                td
+                                    input.btn.btn-warning(type="button", value='Remove', ng-click='removeDoctor(doctor)')
+                                td
+                                    +ng-input-text-min('dname', 'doctor.name', 'Add the doctors name', false, false)
+                                td
+                                    +ng-input-color-min('dcolour', 'doctor.colour', 'Add a colour for the doctor', false, false)
+                            tr
+                                td
+                                    input.btn.btn-success(type="button", value='Add', ng-click='addDoctor()')
+                                td
+                                td
+
+        br
+        .row
+            .col-md-2.col-sm-1
+            .col-md-8.col-sm-10
+                .form-group
+                    ul.nav.nav-pills.pull-right
+                        li(role='presentation')
+                            input.btn.btn-primary(type="button", value="Save", ng-click='saveDoctors()')
