@@ -25,6 +25,15 @@ mixin ng-input-text(name, label, model, placeholder, required, readonly, minLen,
                 span.input-group-addon
                     span(style="color:red").glyphicon.glyphicon-asterisk
 
+mixin ng-input-number(name, label, model, placeholder, required, readonly, min, max, changeEvent, blurEvent)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=name)= label
+        div.input-group
+            input.form-control(type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, min=min, max=max size='40', ng-change=changeEvent, ng-blur=blurEvent)
+            if (required)
+                span.input-group-addon
+                    span(style="color:red").glyphicon.glyphicon-asterisk
+
 mixin ng-input-textarea(name, label, model, placeholder, required, readonly, minLen, maxLen, changeEvent, blurEvent)
     .form-group
         label.control-label.col-md-3.col-sm-4(for=name)= label
@@ -84,7 +93,7 @@ mixin ng-input-currency(name, label, model, placeholder, required, readonly, min
                 span.input-group-addon
                     span(style="color:red").glyphicon.glyphicon-asterisk
 
-mixin ng-input-checkbox(name, label, model, selected, required, readonly)
+mixin ng-input-checkbox(name, label, model, required, readonly)
     .form-group
         .col-md-3.col-sm-4
         div.input-group
@@ -132,4 +141,10 @@ mixin ng-input-time(name, label, model, placeholder, required, readonly)
             if (required)
                 span.input-group-addon
                     span(style="color:red").glyphicon.glyphicon-asterisk
+
+mixin ng-input-toggle(name, label, model, on, off, onstyle, offstyle, size, required, readonly)
+    .form-group
+        label.control-label.col-md-3.col-sm-4(for=id)= label
+        div.input-group
+            input(type="checkbox", name=name, checked, ng-model=model, data-toggle="toggle", data-on=on, data-off=off, data-onstyle=onstyle, data-offstyle=offstyle, data-width=size)
 

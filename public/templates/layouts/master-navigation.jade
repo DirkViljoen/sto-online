@@ -3,6 +3,8 @@ html(lang="en", ng-app="app")
         title STO Online
 
         link(rel="stylesheet", href="/components/bootstrap/dist/css/bootstrap.min.css")
+        link(rel="stylesheet", href="/components/bootstrap-toggle/css/bootstrap-toggle.min.css")
+        link(rel="stylesheet", href="/components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css")
         link(rel="stylesheet", href="/css/app.css")
 
     body.container-fluid.positionRelative(id='Navigation', ng-controller='nav-ctrl', ng-init='initnav()')
@@ -22,7 +24,7 @@ html(lang="en", ng-app="app")
                                 span(class="caret")
                             ul.dropdown-menu
                                 li
-                                    a(href="/settings/docters") Manage docters
+                                    a(href="/settings/doctors") Manage doctors
                                 li
                                     a(href="/settings/therapists") Manage therapists
                                 li
@@ -45,6 +47,8 @@ html(lang="en", ng-app="app")
         script(src='/components/angular/angular.min.js')
         script(src='/components/angular-route/angular-route.min.js')
         script(src="/components/bootstrap/dist/js/bootstrap.min.js")
+        script(src='/components/bootstrap-toggle/js/bootstrap-toggle.min.js')
+        script(src='/components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js')
         script(src="/components/angular-timer/dist/angular-timer.min.js")
         script(src='/components/moment/min/moment.min.js')
         script(src='/components/moment/min/locales.min.js')

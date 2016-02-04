@@ -2,26 +2,25 @@
 
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
-var doctormodel = require('../models/docter');
+// var doctormodel = require('../models/doctor');
 
 var RoomSchema   = new Schema({
     name: String,
-    group: String,
-    docter: { type : mongoose.Schema.ObjectId, ref : 'docters' },
-    docterTimeIn: String,
-    docterDuration: Number,
-    docterDone: Boolean,
-    docterStart: Boolean,
-    therapist: { type : mongoose.Schema.ObjectId, ref : 'therapists' },
-    therapistTimeIn: String,
-    therapistDuration: Number,
-    therapistDone: Boolean,
-    therapistStart: Boolean,
-    sisterTimeIn: String,
-    sisterDuration: Number,
-    sisterDone: Boolean,
-    sisterStart: Boolean,
-    patient: String
+    multipleBeds: Boolean,
+    column: Number,
+    row: Number,
+
+    therapists: [{ type : mongoose.Schema.ObjectId, ref : 'therapists' }],
+    beds: [{ type : mongoose.Schema.ObjectId, ref : 'beds' }],
+
+    // moved to bed
+    // doctor: { type : mongoose.Schema.ObjectId, ref : 'doctors' },
+    // patient: String,
+
+    // outdated
+    // group: String,
+    // therapist: { type : mongoose.Schema.ObjectId, ref : 'therapists' }
+
 });
 
 module.exports = mongoose.model('room', RoomSchema);

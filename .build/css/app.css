@@ -47,32 +47,24 @@
   border-style: solid;
   border-width: 1px;
   margin: 5px;
-  padding: 5px;
+  padding-left: 5px;
 }
 /* line 59, css/app */
 .docter {
   border-radius: 15px 30px 50px 15px;
-  box-shadow: 2px 2px 5px grey;
-  border-style: solid;
-  border-width: 1px;
   margin: 5px;
-  padding: 5px;
+  padding-left: 5px;
 }
 /* line 68, css/app */
 .therapist {
   border-radius: 15px 50px 30px 15px;
-  box-shadow: 2px 2px 5px grey;
-  border-style: solid;
-  border-width: 1px;
   margin: 5px;
-  padding: 5px;
+  padding-left: 5px;
 }
 /* line 77, css/app */
 .sister {
+  background-color: rgba(255, 255, 255, 0.7);
   border-radius: 15px 50px 30px 15px;
-  box-shadow: 2px 2px 5px grey;
-  border-style: solid;
-  border-width: 1px;
   margin: 5px;
-  padding: 5px;
+  padding-left: 5px;
 }

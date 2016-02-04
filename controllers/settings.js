@@ -2,7 +2,7 @@
 
 module.exports = function (router) {
 
-    router.get('/docters', function (req, res) {
+    router.get('/doctors', function (req, res) {
 
         // res.send('<code><pre>' + JSON.stringify(model, null, 2) + '</pre></code>');
         var obj = {};
@@ -10,7 +10,7 @@ module.exports = function (router) {
         obj.q = req.query;
         obj.u = req.user;
 
-        res.render('settings/docters',obj);
+        res.render('settings/doctors',obj);
 
     });
 
