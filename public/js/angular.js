@@ -1,4 +1,4 @@
-var myModule = angular.module('app', ['timer','ngRoute']);
+var myModule = angular.module('app', ['timer','ngRoute', 'ui.bootstrap', 'colorpicker.module']);
 
 var refreshInterval = 10;
 
@@ -24,6 +24,14 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
     $scope.intervals.doctors = [5,10,15,20,30,45,60,90];
     $scope.intervals.therapists = [5,10,15,20,30,45,60,90];
     $scope.intervals.sisters = [5,10,15];
+
+    $scope.staticLookup = {};
+    $scope.staticLookup.rooms = {};
+    $scope.staticLookup.rooms.columns = [1,2,3,4,5,6];
+    $scope.staticLookup.rooms.rows = [1,2,3,4];
+    $scope.staticLookup.beds = {};
+    $scope.staticLookup.beds.columns = [1,2,3,4,5];
+    $scope.staticLookup.beds.rows = [1,2,3,4,5];
 
     var lastrefresh = moment(),
         allowRefresh = false;
@@ -67,14 +75,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                 // console.log(response.data);
                 if (response.data) {
                     $scope.rooms = response.data;
-                    // for (i = 0; i < $scope.rooms.length; i++){
 
-                    //     var rtemp = {};
-                    //     rtemp._id = $scope.rooms[i]._id;
-                    //     rtemp.name = $scope.rooms[i].name;
-                    //     rtemp.beds = $scope.rooms[i].beds
-                    // }
-                    console.log($scope.rooms);
+                    // console.log($scope.rooms);
                     $scope.loading++;
                     buildrooms();
                 }
@@ -89,12 +91,33 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                 // console.log(response.data);
                 if (response.data) {
                     $scope.room = response.data;
+
+                    $scope.room.multipleBeds = convertBoolToInt($scope.room.multipleBeds);
+                    $scope.room.bedsView = convertBoolToInt($scope.room.bedsView);
+                    $scope.room.resetDoctors = convertBoolToInt($scope.room.resetDoctors);
+
+                    $scope.room.dTrackTime = convertBoolToInt($scope.room.dTrackTime);
+
                     getBeds(id);
 
                 }
             }, function(err) {
                 $scope.error = err.data;
             });
+         };
+
+        convertBoolToInt = function(value){
+            if (value == undefined){
+                return undefined;
+            }
+            else{
+                if (value){
+                    return 1;
+                }
+                else{
+                    return 0;
+                }
+            }
          };
 
         getBeds = function (rid){
@@ -124,6 +147,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
         };
 
         $scope.updateRoom = function(){
+            console.log($scope.room);
             if ($scope.room._id){
                 $http.put('/api/rooms/' + $scope.room._id, $scope.room)
                     .then(
@@ -204,27 +228,12 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.deleteRoom = function(){
-            if ($scope.room.beds.length != 0){
-                for (k = 0; k < $scope.room.beds.length; k++){
-                    $http.delete('/api/rooms/' + $scope.room._id + '/beds/' + $scope.room.beds[k]._id, {})
-                    if (k == $scope.room.beds.length - 1){
-                        $http.delete('/api/rooms/' + $scope.room._id, $scope.room)
-                        .then(
-                            function(result){
-                                $scope.initmanage();
-                            }
-                        )
+            $http.delete('/api/rooms/' + $scope.room._id, $scope.room)
+                .then(
+                    function(result){
+                        $scope.initmanage();
                     }
-                }
-            }
-            else{
-                $http.delete('/api/rooms/' + $scope.room._id, $scope.room)
-                    .then(
-                        function(result){
-                            $scope.initmanage();
-                        }
-                    )
-            }
+                )
          };
 
         $scope.saveDoctors = function(){

@@ -59,7 +59,7 @@ mixin ng-input-number-min(name, model, placeholder, required, readonly, minimum,
     input.form-control(type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, min=minimum, max=maximum size='40', ng-change=changeEvent, ng-blur=blurEvent)
 
 mixin ng-input-color-min(name, model, placeholder, required, readonly, changeEvent, blurEvent)
-    input.form-control(type='color', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required size='40', ng-change=changeEvent, ng-blur=blurEvent)
+    input.form-control(colorpicker='hex', type='text', id=name, name=name, ng-model=model, placeholder=placeholder, readonly=readonly, required=required, size='10', ng-change=changeEvent, ng-blur=blurEvent, style='background-color:{{'+model+'}}')
 
 mixin ng-input-password(name, label, model, placeholder, required, readonly, minLen, maxLen, changeEvent, blurEvent)
     .form-group
@@ -117,7 +117,7 @@ mixin ng-input-combobox-alt(name, label, model, placeholder, options, required, 
         div.input-group
             select.form-control(name=name, ng-model=model, ng-options=options, placeholder=placeholder, readonly=readonly, required=required, ng-change=changeEvent)
 
-mixin ng-input-combobox-min(name, model, placeholder, options, required, readonly, changeEvent)
+mixin ng-input-combobox-min(name, model, placeholder, options, required, readonly, size, changeEvent)
     select.form-control(name=name, ng-model=model, ng-options=options, placeholder=placeholder, readonly=readonly, required=required, ng-change=changeEvent)
 
 mixin ng-input-calendar(name, label, model, placeholder, required, readonly)

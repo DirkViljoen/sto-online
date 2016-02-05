@@ -22,7 +22,7 @@ var BedSchema   = new Schema({
     sisterTimeIn: String,
     sisterDuration: Number,
     sisterDone: Boolean,
-    sisterStart: Boolean,
+    sisterStart: Boolean
 
 });
 

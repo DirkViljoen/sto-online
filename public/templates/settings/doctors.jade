@@ -14,7 +14,7 @@ block content
                             tr
                                 th
                                 th Name
-                                th Colour
+                                th(width='100px') Colour
 
                         tbody
                             tr(ng-repeat="doctor in doctors")
@@ -23,6 +23,7 @@ block content
                                 td
                                     +ng-input-text-min('dname', 'doctor.name', 'Add the doctors name', false, false)
                                 td
+                                    //- input(colorpicker='hex', type='text', ng-model='doctor.colour')
                                     +ng-input-color-min('dcolour', 'doctor.colour', 'Add a colour for the doctor', false, false)
                             tr
                                 td

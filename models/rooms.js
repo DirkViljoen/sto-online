@@ -7,11 +7,24 @@ var Schema       = mongoose.Schema;
 var RoomSchema   = new Schema({
     name: String,
     multipleBeds: Boolean,
+    bedsView: Boolean,
     column: Number,
     row: Number,
 
     therapists: [{ type : mongoose.Schema.ObjectId, ref : 'therapists' }],
     beds: [{ type : mongoose.Schema.ObjectId, ref : 'beds' }],
+
+    // Settings
+    resetTherapists: Number,
+    resetDoctors: Number,
+    resetPatients: Number,
+
+    dTimerType: String,
+    dTrackTime: Number,
+    tTimerType: String,
+    tTrackTime: Number,
+    sTimerType: String,
+    sTrackTime: Number
 
     // moved to bed
     // doctor: { type : mongoose.Schema.ObjectId, ref : 'doctors' },

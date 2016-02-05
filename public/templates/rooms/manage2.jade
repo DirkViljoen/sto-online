@@ -9,19 +9,60 @@ block content
                     each c in [1, 2, 3, 4, 5, 6]
                         .col-sm-2
                             div(ng-repeat='room in rooms | filter:({column: ' + c + ', row: ' + r + '})')
-                                div.room(data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(room._id)", style='background-color:{{room.dcolour}}')
+                                div.ward(ng-if='room.multipleBeds==1', data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(room._id)")
                                     h3 {{room.name}}
                                     .row
                                         .col-md-5
                                             span Type:
                                         .col-md-7
-                                            b(ng-if='room.multipleBeds==true') Ward
-                                            b(ng-if='room.multipleBeds==false') Cubicle
-                                    .row
+                                            .row(ng-if='room.multipleBeds==1')
+                                                b.info_ward Ward
+                                            .row(ng-if='room.multipleBeds==0')
+                                                b.info_cubicle Cubicle
+
+                                    //- Ward details
+                                    .row(ng-if='room.multipleBeds==1')
+                                        .col-md-5
+                                            span View:
+                                        .col-md-7
+                                            .row(ng-if='room.bedsView==1')
+                                                b.info Beds
+                                            .row(ng-if='room.bedsView==0')
+                                                b.info Therapist list
+                                    .row(ng-if='room.multipleBeds==1')
                                         .col-md-5
                                             span Beds:
                                         .col-md-7
-                                            b {{room.beds.length}}
+                                            .row
+                                                b.info {{room.beds.length}}
+
+                                div.cubicle(ng-if='room.multipleBeds==0', data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(room._id)")
+                                    h3 {{room.name}}
+                                    .row
+                                        .col-md-5
+                                            span Type:
+                                        .col-md-7
+                                            .row(ng-if='room.multipleBeds==1')
+                                                b.info_ward Ward
+                                            .row(ng-if='room.multipleBeds==0')
+                                                b.info_cubicle Cubicle
+
+                                    //- Cubicle Details
+                                    .row(ng-if='room.multipleBeds==0')
+                                        .col-md-5
+                                            span Resets:
+                                        .col-md-7
+                                            .row(ng-if='room.resetDoctors==1 && room.resetTherapists==1 && room.resetPatients==1')
+                                                b.info All
+                                            .row(ng-if='room.resetDoctors==0 && room.resetTherapists==0 && room.resetPatients==0')
+                                                b.info None
+                                            .row(ng-if='room.resetDoctors==1 && (room.resetTherapists==0 || room.resetPatients==0)')
+                                                b.info Doctors
+                                            .row(ng-if='room.resetTherapists==1 && (room.resetDoctors==0 || room.resetPatients==0)')
+                                                b.info Therapists
+                                            .row(ng-if='room.resetPatients==1 && (room.resetTherapists==0 || room.resetDoctors==0)')
+                                                b.info Patients
+
 
                             br
         .row
@@ -35,44 +76,141 @@ block content
 
 
         .modal.fade#manageRoom
-            .modal-dialog
+            .modal-dialog.modal-lg
                 .modal-content.form-group.form-horizontal
                     .modal-header
                         h4.modal-title Manage Room: {{room.name}}
                     .modal-body
-                        +ng-input-text('rName', 'Room name', 'room.name', 'Add a name for the room', false, false)
-                        +ng-input-number('rColumn', 'Room column', 'room.column', 'Add the room to a column', false, false, 1, 6)
-                        +ng-input-number('rRow', 'Room row', 'room.row', 'Add the room to a row', false, false, 1, 5)
-                        +ng-input-checkbox('chkBox', 'Is a ward', 'room.multipleBeds', false, false)
-                        +ng-input-toggle('rMultiRoom', 'Type', 'room.multipleBeds', 'Cubicle', 'Ward', 'default', 'default', 100, false, false)
-                        .grouphead
-                            h5 Beds
-                        .groupbox
-                            table.table.table-hover.table-responsive(id="beds-table" st-table='room.beds')
-                                thead
-                                    tr
-                                        th
-                                        th Name
-                                        th Column
-                                        th Row
+                        +ng-input-text('rName', 'Room name:', 'room.name', 'Add a name for the room', false, false)
+                        +ng-input-combobox('rColumn', 'Room column:', 'room.column', '', 'column for column in staticLookup.rooms.columns', false, false)
+                        +ng-input-combobox('rRow', 'Room row:', 'room.row', '', 'row for row in staticLookup.rooms.rows', false, false)
 
-                                tbody
-                                    tr(ng-repeat="bed in room.beds")
-                                        td
-                                            input.btn.btn-warning(type="button", value='Remove', ng-click='removeBed(bed)')
-                                        td
-                                            +ng-input-text-min('bname', 'bed.name', 'Name', false, false)
-                                        td
-                                            +ng-input-text-min('bcolumn', 'bed.column', 'Display column', false, false)
-                                        td
-                                            +ng-input-text-min('brow', 'bed.row', 'Display row', false, false)
-                                    tr
-                                        td
-                                            input.btn.btn-success(type="button", value='Add', ng-click='addBed()')
-                                        td
-                                        td
-                                        td
-                        br
+                        .form-group
+                            label.control-label.col-md-3.col-sm-4 Type:
+                            div.input-group
+                                div.btn-group
+                                    label.btn.btn-default(ng-model='room.multipleBeds' uib-btn-radio=1) Ward
+                                    label.btn.btn-default(ng-model='room.multipleBeds' uib-btn-radio=0) Cubicle
+
+                        div(ng-if='room.multipleBeds==0')
+                            .grouphead
+                                h5 Doctors
+                            .groupbox
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Timer Type:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.dTimerType' uib-btn-radio='"SSR"') Start/Stop/Reset
+                                            label.btn.btn-default(ng-model='room.dTimerType' uib-btn-radio='"SDR"') Start/Done/Reset
+                                            label.btn.btn-default(ng-model='room.dTimerType' uib-btn-radio='"DR"') Done/Reset
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Track Time:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.dTrackTime' uib-btn-radio=1) Yes
+                                            label.btn.btn-default(ng-model='room.dTrackTime' uib-btn-radio=0) No
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Clear doctor on reset:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.resetDoctors' uib-btn-radio=1) Yes
+                                            label.btn.btn-default(ng-model='room.resetDoctors' uib-btn-radio=0) No
+                            br
+
+                            .grouphead
+                                h5 Therapists
+                            .groupbox
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Timer Type:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.tTimerType' uib-btn-radio='"SSR"') Start/Stop/Reset
+                                            label.btn.btn-default(ng-model='room.tTimerType' uib-btn-radio='"SDR"') Start/Done/Reset
+                                            label.btn.btn-default(ng-model='room.tTimerType' uib-btn-radio='"DR"') Done/Reset
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Track Time:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.tTrackTime' uib-btn-radio=1) Yes
+                                            label.btn.btn-default(ng-model='room.tTrackTime' uib-btn-radio=0) No
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Clear therapists on reset:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.resetTherapists' uib-btn-radio=1) Yes
+                                            label.btn.btn-default(ng-model='room.resetTherapists' uib-btn-radio=0) No
+                            br
+
+                            .grouphead
+                                h5 Sisters
+                            .groupbox
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Timer Type:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.sTimerType' uib-btn-radio='"SSR"') Start/Stop/Reset
+                                            label.btn.btn-default(ng-model='room.sTimerType' uib-btn-radio='"SDR"') Start/Done/Reset
+                                            label.btn.btn-default(ng-model='room.sTimerType' uib-btn-radio='"DR"') Done/Reset
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Track Time:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.sTrackTime' uib-btn-radio=1) Yes
+                                            label.btn.btn-default(ng-model='room.sTrackTime' uib-btn-radio=0) No
+                            br
+
+                            .grouphead
+                                h5 Patients
+                            .groupbox
+                                .form-group
+                                    label.control-label.col-md-3.col-sm-4 Clear patient on reset:
+                                    div.input-group
+                                        div.btn-group
+                                            label.btn.btn-default(ng-model='room.resetPatients' uib-btn-radio=1) Yes
+                                            label.btn.btn-default(ng-model='room.resetPatients' uib-btn-radio=0) No
+                            br
+
+                        div(ng-if='room.multipleBeds==1')
+                            .form-group
+                                label.control-label.col-md-3.col-sm-4 View:
+                                div.input-group
+                                    div.btn-group
+                                        label.btn.btn-default(ng-model='room.bedsView' uib-btn-radio=1) Beds
+                                        label.btn.btn-default(ng-model='room.bedsView' uib-btn-radio=0) Therapists
+
+                            .grouphead
+                                h5 Beds
+                            .groupbox
+                                table.table.table-hover.table-responsive(id="beds-table" st-table='room.beds')
+                                    thead
+                                        tr
+                                            th
+                                            th Name
+                                            th(width='60px') Col
+                                            th(width='60px') Row
+
+                                    tbody
+                                        tr(ng-repeat="bed in room.beds")
+                                            td
+                                                button.btn.btn-warning.btn-md(type="button", value='-', ng-click='removeBed(bed)')
+                                                    span.glyphicon.glyphicon-remove
+                                            td
+                                                +ng-input-text-min('bname', 'bed.name', 'Name', false, false)
+                                            td
+                                                //- +ng-input-text-min('bcolumn', 'bed.column', 'Display column', false, false)
+                                                +ng-input-combobox-min('bcolumn', 'bed.column', '', 'column for column in staticLookup.beds.columns', false, false)
+                                            td
+                                                //- +ng-input-text-min('brow', 'bed.row', 'Display row', false, false)
+                                                +ng-input-combobox-min('brow', 'bed.row', '', 'row for row in staticLookup.beds.rows', false, false, 30)
+                                        tr
+                                            td
+                                                button.btn.btn-success(type="button", value='', ng-click='addBed()')
+                                                    span.glyphicon.glyphicon-plus
+                                            td
+                                            td
+                                            td
+                                            td
+                            br
                         //- p {{room}}
 
                     .modal-footer

@@ -172,6 +172,18 @@ module.exports = function (router) {
             });
          });
 
+        router.get('/beds', function(req, res) {
+            bedmodel.find(function(err, beds) {
+                if (err){
+                    res.send(err);
+                }
+                else{
+                    res.send(beds);
+                }
+
+            });
+         });
+
         router.get('/rooms/:id/beds', function(req, res) {
             roommodel.findById(req.params.id, function(err, room) {
                 if (err)
@@ -213,8 +225,22 @@ module.exports = function (router) {
             var room = new roommodel();
             room.name = req.body.name;
             room.multipleBeds = req.body.multipleBeds ? req.body.multipleBeds : false;
-            room.column = req.body.column ? req.body.column : 0;
-            room.row = req.body.row ? req.body.row : 0;
+            room.bedsView = req.body.bedsView ? req.body.bedsView : true;
+            room.column = req.body.column ? req.body.column : 1;
+            room.row = req.body.row ? req.body.row : 1;
+
+            room.resetTherapists = req.body.resetTherapists ? req.body.resetTherapists : 1;
+            room.resetDoctors = req.body.resetDoctors ? req.body.resetDoctors : 1;
+            room.resetPatients = req.body.resetPatients ? req.body.resetPatients : 1;
+
+            room.dTimerType = req.body.dTimerType ? req.body.dTimerType : 'SSR';
+            room.dTrackTime = req.body.dTrackTime ? req.body.dTrackTime : 1;
+
+            room.tTimerType = req.body.tTimerType ? req.body.tTimerType : 'SSR';
+            room.tTrackTime = req.body.tTrackTime ? req.body.tTrackTime : 1;
+
+            room.sTimerType = req.body.sTimerType ? req.body.sTimerType : 'DR';
+            room.sTrackTime = req.body.sTrackTime ? req.body.sTrackTime : 0;
 
             // save the Room and check for errors
             room.save(function(err, newRoom) {
@@ -258,16 +284,78 @@ module.exports = function (router) {
 
         router.put('/rooms/:id', function(req, res) {
             roommodel.findById(req.params.id, function(err, room) {
-                console.log(room);
+                console.log('hello Dirk', room);
                 if (err)
                     res.send(err);
 
                 room.name = req.body.name ? req.body.name : room.name;
+
                 if (!(req.body.multipleBeds === undefined)){
                     room.multipleBeds = req.body.multipleBeds;
                 }
+                else{
+                    room.multipleBeds = 0;
+                }
 
-                // room.multipleBeds = req.body.multipleBeds ? req.body.multipleBeds : room.multipleBeds;
+                // room.bedsView = req.body.bedsView ? req.body.bedsView : 1;
+                if (!(req.body.bedsView === undefined)){
+                    room.bedsView = req.body.bedsView;
+                }
+                else{
+                    room.bedsView = 1;
+                }
+
+                // room.resetTherapists = req.body.resetTherapists ? req.body.resetTherapists : 1;
+                if (!(req.body.resetTherapists === undefined)){
+                    room.resetTherapists = req.body.resetTherapists;
+                }
+                else{
+                    room.resetTherapists = 1;
+                }
+
+                // room.resetDoctors = req.body.resetDoctors ? req.body.resetDoctors : 1;
+                if (!(req.body.resetDoctors === undefined)){
+                    room.resetDoctors = req.body.resetDoctors;
+                }
+                else{
+                    room.resetDoctors = 1;
+                }
+
+                // room.resetPatients = req.body.resetPatients ? req.body.resetPatients : 1;
+                if (!(req.body.resetPatients === undefined)){
+                    room.resetPatients = req.body.resetPatients;
+                }
+                else{
+                    room.resetPatients = 1;
+                }
+
+                room.dTimerType = req.body.dTimerType ? req.body.dTimerType : 'SSR';
+                // room.dTrackTime = req.body.dTrackTime ? req.body.dTrackTime : 1;
+                if (!(req.body.dTrackTime === undefined)){
+                    room.dTrackTime = req.body.dTrackTime;
+                }
+                else{
+                    room.dTrackTime = 1;
+                }
+
+                room.tTimerType = req.body.tTimerType ? req.body.tTimerType : 'SSR';
+                // room.tTrackTime = req.body.tTrackTime ? req.body.tTrackTime : 1;
+                if (!(req.body.tTrackTime === undefined)){
+                    room.tTrackTime = req.body.tTrackTime;
+                }
+                else{
+                    room.tTrackTime = 1;
+                }
+
+                room.sTimerType = req.body.sTimerType ? req.body.sTimerType : 'SSR';
+                // room.sTrackTime = req.body.sTrackTime ? req.body.sTrackTime : 1;
+                if (!(req.body.sTrackTime === undefined)){
+                    room.sTrackTime = req.body.sTrackTime;
+                }
+                else{
+                    room.sTrackTime = 1;
+                }
+
                 room.column = req.body.column ? req.body.column : room.column;
                 room.row = req.body.row ? req.body.row : room.row;
 
@@ -277,10 +365,13 @@ module.exports = function (router) {
                 // room.beds = req.body.beds ? req.body.beds : room.beds;
 
                 room.save(function(err) {
-                    if (err)
-                        res.send(err);
-
-                    res.json({ message: 'Room updated!' });
+                    if (err){
+                        console.error('###UPDATE Room')
+                        res.send({'error':true, 'message':err});
+                    }
+                    else{
+                        res.send({ 'error': false });
+                    }
                 });
 
             });
@@ -421,40 +512,80 @@ module.exports = function (router) {
             });
          });
 
-        router.delete('/rooms/:id', function(req, res) {
-            roommodel.remove({
-                _id: req.params.id
-            }, function(err, doc) {
-                if (err)
-                    res.send(err);
+        router.delete('/rooms/:rid', function(req, res) {
+            roommodel.findById(req.params.rid, function(err, room) {
+                if (err){
+                    console.error('##FIND Room' ,err);
+                }
+                else{
+                    var beds = room.beds;
+                    console.log(beds);
 
-                console.log('##DELETE Room', req.params.rid);
-                res.json({ message: 'Room successfully deleted' });
-            });
+                    // Remove all beds linked to the room
+                    for (var k=0;k<beds.length;k++){
+                        bedmodel.remove({
+                            _id: beds[k]
+                        }, function(err, doc) {
+                            if (err){
+                                console.error('##DELETE Bed', err);
+                                // res.send({'error':true,'message':err});
+                            }
+                            else{
+                                console.log('##DELETE Bed', beds[k]);
+                                // res.send({'error':false});
+                            }
+                        });
+                    }
+
+                    // Remove the room
+                    roommodel.remove({
+                        _id: req.params.rid
+                    }, function(err, doc) {
+                        if (err){
+                            console.error('##DELETE Room', err);
+                            res.send({'error':true,'message':err});
+                        }
+                        else{
+                            console.log('##DELETE Room', req.params.rid);
+                            res.send({'error': false});
+                        }
+                    });
+                }
+            })
+
+
          });
 
         router.delete('/rooms/:rid/beds/:bid', function(req, res) {
             roommodel.findById(req.params.rid, function(err, room) {
-                if (err)
-                    res.send(err);
-                room.beds.splice(room.beds.indexOf(req.params.bid),1);
+                if (err){
+                    console.error('##FIND Room' ,err);
+                }
+                else{
+                    room.beds.splice(room.beds.indexOf(req.params.bid),1);
 
-                room.save(function(err) {
-                    if (err)
-                        res.send(err);
-
-                    console.log('##UPDATE Room', req.params.rid);
-                });
+                    room.save(function(err) {
+                        if (err){
+                            console.error('##UPDATE Room', err);
+                        }
+                        else{
+                            console.log('##UPDATE Room', req.params.rid);
+                        }
+                    });
+                }
             })
 
             bedmodel.remove({
                 _id: req.params.bid
             }, function(err, doc) {
-                if (err)
-                    res.send(err);
-
-                console.log('##DELETE Bed', req.params.bid);
-                res.json({ message: 'Bed successfully deleted' });
+                if (err){
+                    console.error('##DELETE Bed', err);
+                    res.send({'error':true,'message':err});
+                }
+                else{
+                    console.log('##DELETE Bed', req.params.bid);
+                    res.send({'error':false});
+                }
             });
          });
 
