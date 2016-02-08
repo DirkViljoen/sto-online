@@ -4,7 +4,7 @@ include ../../mixins/mixins
 block content
     form(id='RoomView', ng-controller='rooms-ctrl', ng-init='initmanage()')
         .row
-            each r in [1, 2, 3, 4, 5]
+            each r in [1, 2, 3, 4]
                 .row
                     each c in [1, 2, 3, 4, 5, 6]
                         .col-sm-2
@@ -192,7 +192,7 @@ block content
                                     tbody
                                         tr(ng-repeat="bed in room.beds")
                                             td
-                                                button.btn.btn-warning.btn-md(type="button", value='-', ng-click='removeBed(bed)')
+                                                button.btn.btn-warning.btn-md(ng-if='$index!=0', type="button", value='-', ng-click='removeBed(bed)')
                                                     span.glyphicon.glyphicon-remove
                                             td
                                                 +ng-input-text-min('bname', 'bed.name', 'Name', false, false)

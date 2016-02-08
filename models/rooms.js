@@ -6,8 +6,8 @@ var Schema       = mongoose.Schema;
 
 var RoomSchema   = new Schema({
     name: String,
-    multipleBeds: Boolean,
-    bedsView: Boolean,
+    multipleBeds: Number,
+    bedsView: Number,
     column: Number,
     row: Number,
 

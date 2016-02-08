@@ -23,16 +23,18 @@ module.exports = function (router) {
     // Doctors
 
         router.get('/doctors', function(req, res) {
-            doctormodel.find(function(err, doctors) {
-                if (err)
+            doctormodel.find(function(err, doctors){
+                if (err){
                     res.send(err);
-
-                res.send(doctors);
-            });
+                }
+                else{
+                    res.send(doctors);
+                }
+            }).sort({'name':1});
          });
 
         router.get('/doctors/:id', function(req, res) {
-            doctormodel.findById(req.params.id, function(err, dokter) {
+            doctormodel.findById(req.params.id, function(err, doctor) {
                 if (err)
                     res.send(err);
                 res.send(doctor);
@@ -92,11 +94,13 @@ module.exports = function (router) {
 
         router.get('/therapists', function(req, res) {
             therapistmodel.find(function(err, therapists) {
-                if (err)
+                if (err){
                     res.send(err);
-
-                res.send(therapists);
-            });
+                }
+                else{
+                    res.send(therapists);
+                }
+            }).sort({'name':1});
          });
 
         router.get('/therapists/:id', function(req, res) {
@@ -157,24 +161,34 @@ module.exports = function (router) {
 
         router.get('/rooms', function(req, res) {
             roommodel.find(function(err, rooms) {
-                if (err)
+                if (err){
+                    console.log('#ERROR# GET Rooms', err.message)
                     res.send(err);
-
-                res.send(rooms);
+                }
+                else{
+                    res.send(rooms);
+                }
             });
          });
 
         router.get('/rooms/:id', function(req, res) {
             roommodel.findById(req.params.id, function(err, room) {
-                if (err)
+                if (err){
+                    console.log('#ERROR# GET Rooms/' + req.params.id, err.message);
                     res.send(err);
-                res.send(room);
+                }
+                else{
+                    res.send(room);
+                }
+
             });
          });
 
         router.get('/beds', function(req, res) {
             bedmodel.find(function(err, beds) {
                 if (err){
+                    console.log('#ERROR# GET Beds', err.message);
+                    console.error(err);
                     res.send(err);
                 }
                 else{
@@ -366,7 +380,7 @@ module.exports = function (router) {
 
                 room.save(function(err) {
                     if (err){
-                        console.error('###UPDATE Room')
+                        console.error('###ERROR UPDATE Room');
                         res.send({'error':true, 'message':err});
                     }
                     else{
@@ -381,38 +395,43 @@ module.exports = function (router) {
             console.log(req.body);
             bedmodel.findById(req.params.bid, function(err, bed) {
                 console.log(bed);
-                if (err)
-                    res.send(err);
+                if (err){
+                    console.error('###ERROR UPDATE Bed')
+                    res.send({'error':true, 'message':err});
+                }
+                else{
+                    bed.name = req.body.name ? req.body.name : bed.name;
+                    bed.column = req.body.column ? req.body.column : bed.column;
+                    bed.row = req.body.row ? req.body.row : bed.row;
 
-                bed.name = req.body.name ? req.body.name : bed.name;
-                bed.column = req.body.column ? req.body.column : bed.column;
-                bed.row = req.body.row ? req.body.row : bed.row;
+                    bed.doctor = req.body.doctor ? req.body.doctor : bed.doctor;
+                    bed.patient = req.body.patient ? req.body.patient : bed.patient;
 
-                bed.doctor = req.body.doctor ? req.body.doctor : bed.doctor;
-                bed.patient = req.body.patient ? req.body.patient : bed.patient;
+                    bed.doctorTimeIn = req.body.dtime ? req.body.dtime : null;
+                    bed.doctorDuration = req.body.doctorDuration ? req.body.doctorDuration : defualtDuration;
+                    bed.doctorStart = req.body.doctorStart ? req.body.doctorStart : false;
+                    bed.doctorDone = req.body.doctorDone ? req.body.doctorDone : false;
 
-                bed.doctorTimeIn = req.body.dtime ? req.body.dtime : null;
-                bed.doctorDuration = req.body.doctorDuration ? req.body.doctorDuration : defualtDuration;
-                bed.doctorStart = req.body.doctorStart ? req.body.doctorStart : false;
-                bed.doctorDone = req.body.doctorDone ? req.body.doctorDone : false;
+                    bed.therapistTimeIn = req.body.ttime ? req.body.ttime : null;
+                    bed.therapistDuration = req.body.therapistDuration ? req.body.therapistDuration : defualtDuration;
+                    bed.therapistStart = req.body.therapistStart ? req.body.therapistStart : false;
+                    bed.therapistDone = req.body.therapistDone ? req.body.therapistDone : false;
 
-                bed.therapistTimeIn = req.body.ttime ? req.body.ttime : null;
-                bed.therapistDuration = req.body.therapistDuration ? req.body.therapistDuration : defualtDuration;
-                bed.therapistStart = req.body.therapistStart ? req.body.therapistStart : false;
-                bed.therapistDone = req.body.therapistDone ? req.body.therapistDone : false;
+                    bed.sisterTimeIn = req.body.stime ? req.body.stime : null;
+                    bed.sisterDuration = req.body.sisterDuration ? req.body.sisterDuration : defualtDuration;
+                    bed.sisterStart = req.body.sisterStart ? req.body.sisterStart : false;
+                    bed.sisterDone = req.body.sisterDone ? req.body.sisterDone : false;
 
-                bed.sisterTimeIn = req.body.stime ? req.body.stime : null;
-                bed.sisterDuration = req.body.sisterDuration ? req.body.sisterDuration : defualtDuration;
-                bed.sisterStart = req.body.sisterStart ? req.body.sisterStart : false;
-                bed.sisterDone = req.body.sisterDone ? req.body.sisterDone : false;
-
-                bed.save(function(err) {
-                    if (err)
-                        res.send(err);
-
-                    res.json({ message: 'Bed updated!' });
-                });
-
+                    bed.save(function(err) {
+                        if (err){
+                            console.error('###ERROR UPDATE Bed')
+                            res.send({'error':true, 'message':err});
+                        }
+                        else{
+                            res.send({'error':false});
+                        }
+                    });
+                }
             });
          });
 

@@ -66,7 +66,7 @@
   box-shadow: 2px 2px 5px #ddffcc;
   border-style: solid;
   border-width: 1px;
-  margin: 5px;
+  margin: 2px;
   padding-left: 5px;
   padding-bottom: 7px;
 }
@@ -96,16 +96,31 @@
   padding-left: 2px;
   padding-right: 8px;
 }
-/* line 121, css/app */
+/* line 117, css/app */
 .info_ward {
   background-color: #ffcccc;
   border-radius: 15px 50px 30px 15px;
   padding-left: 2px;
   padding-right: 8px;
 }
-/* line 132, css/app */
+/* line 124, css/app */
 .info_cubicle {
   background-color: #ddffcc;
+  border-radius: 15px 50px 30px 15px;
+  padding-left: 2px;
+  padding-right: 8px;
+}
+/* line 131, css/app */
+.info_tag {
+  background-color: #ffffff;
+  border-radius: 15px 30px 30px 15px;
+  margin: 1px;
+  margin-right: 5px;
+  padding-left: 2px;
+  padding-right: 8px;
+}
+/* line 143, css/app */
+.info_empty {
   border-radius: 15px 50px 30px 15px;
   padding-left: 2px;
   padding-right: 8px;

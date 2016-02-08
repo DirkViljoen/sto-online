@@ -4,6 +4,89 @@ include ../../mixins/mixins
 block content
     form(id='RoomView', ng-controller='rooms-ctrl', ng-init='initview()')
         .row
+            each r in [1, 2, 3, 4, 5]
+                .row
+                    each c in [1, 2, 3, 4, 5, 6]
+                        .col-sm-2
+                            div(ng-repeat='room in rooms | filter:({column: ' + c + ', row: ' + r + '})')
+                                div.ward(ng-if='room.multipleBeds==1', data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(room._id)")
+                                    h3 {{room.name}}
+                                    .row
+                                        .col-md-5
+                                            span Type:
+                                        .col-md-7
+                                            .row(ng-if='room.multipleBeds==1')
+                                                b.info_ward Ward
+                                            .row(ng-if='room.multipleBeds==0')
+                                                b.info_cubicle Cubicle
+
+                                    //- Ward details
+                                    .row(ng-if='room.multipleBeds==1')
+                                        .col-md-5
+                                            span View:
+                                        .col-md-7
+                                            .row(ng-if='room.bedsView==1')
+                                                b.info Beds
+                                            .row(ng-if='room.bedsView==0')
+                                                b.info Therapist list
+                                    .row(ng-if='room.multipleBeds==1')
+                                        .col-md-5
+                                            span Beds:
+                                        .col-md-7
+                                            .row
+                                                b.info {{room.beds.length}}
+
+                                //- Cubicles
+                                div.room(ng-if='room.multipleBeds==0', data-toggle="modal", data-target="#manageCubicle", ng-click="setModelOptions(room._id)", style='background-color:{{room.beds[0].dcolour}}')
+                                    h3 {{room.name}}
+
+                                    //- Doctor
+                                    div.info_tag
+                                        .row
+                                            .col-md-8
+                                                b {{room.beds[0].dname}}
+                                            .col-md-4
+                                                .row
+                                                    b.info(style='background-color:hsla(0, 100%, 90%, 1)') NS
+                                                //- .row(ng-if='room.multipleBeds==0')
+                                                //-     b.info_cubicle Cubicle
+
+                                    //- Patient
+                                    div.info_tag
+                                        .row
+                                            .col-md-12
+                                                span.info_empty Patient
+
+                                    //- Therapist
+                                    div.info_tag
+                                        .row
+                                            .col-md-8
+                                                span.info_empty(style='background-color:{{room.therapists[0].colour}}') {{room.therapists[0].name}}
+                                            .col-md-4
+                                                .row
+                                                    b.info(style='background-color:hsla(50, 80%, 90%, 1)') 00:12
+
+                                    //- Sister
+                                    div.info_tag
+                                        .row
+                                            .col-md-8
+                                                span.info_empty Sister
+                                            .col-md-4
+                                                .row
+                                                    b.info(style='background-color:hsla(100, 100%, 90%, 1)') Done
+                                    //- .row
+                                        //- span {{room.beds[0]}}
+
+                            br
+        .row
+            .form-group
+                ul.nav.nav-pills.pull-right
+                    li(role='presentation')
+                        input.btn.btn-success(type="button", value='Add new room', ng-click='setModelOptions()', data-toggle="modal", data-target="#manageRoom")
+                    li(role='presentation')
+                        input.btn.btn-primary(type="button", value="Back", ng-click='saveRooms()')
+
+        .row
             .col-sm-2
                 div(ng-repeat='row in rooms | orderBy:"name" | filter:row.group="group A"')
                     div.room(data-toggle="modal", data-target="#manageRoom", ng-click="setModelOptions(row._id)", style='background-color:{{row.dcolour}}')
@@ -245,7 +328,7 @@ block content
 
                     br
 
-        .modal.fade#manageRoom
+        .modal.fade#manageCubicle
             .modal-dialog
                 .modal-content.form-group.form-horizontal
                     .modal-header
@@ -261,7 +344,7 @@ block content
                             .form-group
                                 .row
                                     .col-sm-5
-                                        +ng-input-combobox-min('doc', 'room.docter', 'Select a docter', 'docter._id as docter.name for docter in docters', false, false, 'doctherChange()')
+                                        +ng-input-combobox-min('doc', 'room.beds[0].doctor', 'Select a doctor', 'doctor._id as doctor.name for doctor in doctors', false, false, 'doctherChange()')
                                     .col-sm-2
                                         +ng-input-combobox-min('docDuration', 'room.docterDuration', 'Select a duration', 'o as o for o in intervals.docters', false, false)
                                     .col-sm-5
@@ -292,7 +375,7 @@ block content
                             .form-group
                                 .row
                                     .col-sm-5
-                                        +ng-input-combobox-min('doc', 'room.therapist', 'Select a therapist', 'ther._id as ther.name for ther in therapists', false, false, 'doctherChange()')
+                                        +ng-input-combobox-min('doc', 'room.therapists[0]', 'Select a therapist', 'ther._id as ther.name for ther in therapists', false, false, 'doctherChange()')
                                     .col-sm-2
                                         +ng-input-combobox-min('therDuration', 'room.therapistDuration', 'Select a duration', 'o as o for o in intervals.therapists', false, false)
                                     .col-sm-5
