@@ -2,7 +2,7 @@ extends ../layouts/master-navigation
 include ../../mixins/mixins
 
 block content
-    form(id='RoomView', ng-controller='rooms-ctrl', ng-init='initmanage()')
+    form(id='RoomView', ng-controller='settings-ctrl', ng-init='initmanage()')
         .row
             each r in [1, 2, 3, 4]
                 .row
