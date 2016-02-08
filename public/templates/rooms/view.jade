@@ -192,13 +192,13 @@ block content
                                     .col-sm-5
                                         ul.nav.nav-pills
                                             li(role='presentation', ng-if='(room.tTimerType=="SSR" || room.tTimerType=="SDR") && (room.beds[0].therapistDone==true || room.beds[0].therapistStart==false)')
-                                                input.btn.btn-warning(type="button", value="Start", ng-click='tstart(room.beds[0]._id)', data-dismiss="modal")
+                                                input.btn.btn-success(type="button", value="Start", ng-click='tstart(room.beds[0]._id)', data-dismiss="modal")
                                             li(role='presentation', ng-if='room.tTimerType=="SSR" && room.beds[0].therapistDone==false && room.beds[0].therapistStart==true')
-                                                input.btn.btn-success(type="button", value='Stop', ng-click='tstop(room.beds[0]._id)', data-dismiss="modal")
+                                                input.btn.btn-danger(type="button", value='Stop', ng-click='tstop(room.beds[0]._id)', data-dismiss="modal")
                                             li(role='presentation', ng-if='room.tTimerType=="SDR" && room.beds[0].therapistDone==false && room.beds[0].therapistStart==true')
-                                                input.btn.btn-success(type="button", value='Done', ng-click='tstop(room.beds[0]._id)', data-dismiss="modal")
+                                                input.btn.btn-danger(type="button", value='Done', ng-click='tstop(room.beds[0]._id)', data-dismiss="modal")
                                             li(role='presentation', ng-if='room.tTimerType=="DR" && room.beds[0].therapistDone==false')
-                                                input.btn.btn-success(type="button", value='Done', ng-click='tstop(room.beds[0]._id)', data-dismiss="modal")
+                                                input.btn.btn-danger(type="button", value='Done', ng-click='tstop(room.beds[0]._id)', data-dismiss="modal")
                                             li(role='presentation', ng-if='room.beds[0].therapistDone==true || room.beds[0].therapistStart==true')
                                                 input.btn.btn-default(type="button", value='Reset', ng-click='treset(room.beds[0]._id)', data-dismiss="modal")
                         br
@@ -218,13 +218,13 @@ block content
                                     .col-sm-5
                                         ul.nav.nav-pills
                                             li(role='presentation', ng-if='(room.sTimerType=="SSR" || room.sTimerType=="SDR") && (room.beds[0].sisterDone==true || room.beds[0].sisterStart==false)')
-                                                input.btn.btn-warning(type="button", value="Start", ng-click='sstart(room.beds[0]._id)', data-dismiss="modal")
+                                                input.btn.btn-success(type="button", value="Start", ng-click='sstart(room.beds[0]._id)', data-dismiss="modal")
                                             li(role='presentation', ng-if='room.sTimerType=="SSR" && room.beds[0].sisterDone==false && room.beds[0].sisterStart==true')
-                                                input.btn.btn-success(type="button", value='Stop', ng-click='sstop(room.beds[0]._id)', data-dismiss="modal")
+                                                input.btn.btn-danger(type="button", value='Stop', ng-click='sstop(room.beds[0]._id)', data-dismiss="modal")
                                             li(role='presentation', ng-if='room.sTimerType=="SDR" && room.beds[0].sisterDone==false && room.beds[0].sisterStart==true')
-                                                input.btn.btn-success(type="button", value='Done', ng-click='sstop(room.beds[0]._id)', data-dismiss="modal")
+                                                input.btn.btn-danger(type="button", value='Done', ng-click='sstop(room.beds[0]._id)', data-dismiss="modal")
                                             li(role='presentation', ng-if='room.sTimerType=="DR" && room.beds[0].sisterDone==false')
-                                                input.btn.btn-success(type="button", value='Done', ng-click='sstop(room.beds[0]._id)', data-dismiss="modal")
+                                                input.btn.btn-danger(type="button", value='Done', ng-click='sstop(room.beds[0]._id)', data-dismiss="modal")
                                             li(role='presentation', ng-if='room.beds[0].sisterDone==true || room.beds[0].sisterStart==true')
                                                 input.btn.btn-default(type="button", value='Reset', ng-click='sreset(room.beds[0]._id)', data-dismiss="modal")
                         br
