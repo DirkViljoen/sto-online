@@ -75,7 +75,9 @@ block content
                                                     b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==false && (room.dTimerType=="SSR" || room.dTimerType=="SDR")', style='background-color:hsla(0, 100%, 90%, 1)') NS
 
                                                     //- yellow
-                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SSR"', style='background-color:hsla(50, 80%, 90%, 1)') 00:12
+                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SSR"', style='background-color:hsla(50, 80%, 90%, 1)')
+                                                        timer(countdown='room.beds[0].dtimeleft' interval="1000")
+                                                            span {{mminutes}}:{{sseconds}}
                                                     b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SDR"', style='background-color:hsla(50, 80%, 90%, 1)') Busy
 
                                                     //- green
@@ -99,7 +101,9 @@ block content
                                                     b.info(ng-if='room.beds[0].therapistDone==false && room.beds[0].therapistStart==false && (room.tTimerType=="SSR" || room.tTimerType=="SDR")', style='background-color:hsla(0, 100%, 90%, 1)') NS
 
                                                     //- yellow
-                                                    b.info(ng-if='room.beds[0].therapistDone==false && room.beds[0].therapistStart==true && room.tTimerType=="SSR"', style='background-color:hsla(50, 80%, 90%, 1)') 00:12
+                                                    b.info(ng-if='room.beds[0].therapistDone==false && room.beds[0].therapistStart==true && room.tTimerType=="SSR"', style='background-color:hsla(50, 80%, 90%, 1)')
+                                                        timer(countdown='room.beds[0].ttimeleft' interval="1000")
+                                                            span {{mminutes}}:{{sseconds}}
                                                     b.info(ng-if='room.beds[0].therapistDone==false && room.beds[0].therapistStart==true && room.tTimerType=="SDR"', style='background-color:hsla(50, 80%, 90%, 1)') Busy
 
                                                     //- green

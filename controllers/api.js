@@ -12,7 +12,7 @@ var
     bedmodel = require('../models/bed');
 
 var
-    defualtDuration = 5;
+    defualtDuration = 1;
 
 module.exports = function (router) {
 

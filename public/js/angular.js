@@ -364,16 +364,6 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             if ($scope.therapistList[0]._id=='000000000000000000000000'){
                 $scope.therapistList.splice(0,1);
             }
-
-            // for (i = 0; i < $scope.room.therapists.length; i++){
-            //     if ($scope.room.therapists[i] != ''){
-            //         for (j = 0; j < $scope.therapistList.length; j++){
-            //             if ($scope.therapistList[j]._id == $scope.room.therapists[i]){
-            //                 $scope.therapistList.splice(j,1);
-            //             }
-            //         }
-            //     }
-            // }
         };
 
     // helper functions
@@ -383,47 +373,47 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             // console.log('info - Rooms:', $scope.rooms.length);
             if ($scope.working == 3){
                 for (r = 0; r < $scope.rooms.length; r++){
-                    // if ($scope.rooms[r].doctorDone){
-                    //     $scope.rooms[r].dtimeleft = 0;
-                    // }
-                    // else{
+                    if ($scope.rooms[r].beds[0].doctorDone){
+                        $scope.rooms[r].beds[0].dtimeleft = 0;
+                    }
+                    else{
 
-                    //     t = moment($scope.rooms[r].doctorTimeIn).add($scope.rooms[r].doctorDuration, 'm').valueOf() - moment().valueOf();
-                    //     if (t < 0){
-                    //         // $http.post('/api/rooms/' + $scope.rooms[r]._id + '/doctorStop', $scope.room)
-                    //         // $scope.rooms[r].doctorDone = true;
-                    //         $scope.rooms[r].dtimeleft = 0;
-                    //     }
-                    //     else{
-                    //         $scope.rooms[r].dtimeleft = t / 1000;
-                    //     }
-                    // }
+                        t = moment($scope.rooms[r].beds[0].doctorTimeIn).add($scope.rooms[r].beds[0].doctorDuration, 'm').valueOf() - moment().valueOf();
+                        if (t < 0){
+                            // $http.post('/api/rooms/' + $scope.rooms[r]._id + '/doctorStop', $scope.room)
+                            // $scope.rooms[r].doctorDone = true;
+                            $scope.rooms[r].beds[0].dtimeleft = 1;
+                        }
+                        else{
+                            $scope.rooms[r].beds[0].dtimeleft = t / 1000;
+                        }
+                    }
 
-                    // if ($scope.rooms[r].therapistDone){
-                    //     $scope.rooms[r].ttimeleft = 0;
-                    // }
-                    // else{
-                    //     t = moment($scope.rooms[r].therapistTimeIn).add($scope.rooms[r].therapistDuration, 'm').valueOf() - moment().valueOf();
-                    //     if (t < 0){
-                    //         $scope.rooms[r].ttimeleft = 0;
-                    //     }
-                    //     else{
-                    //         $scope.rooms[r].ttimeleft = t / 1000;
-                    //     }
-                    // }
+                    if ($scope.rooms[r].beds[0].therapistDone){
+                        $scope.rooms[r].beds[0].ttimeleft = 0;
+                    }
+                    else{
+                        t = moment($scope.rooms[r].beds[0].therapistTimeIn).add($scope.rooms[r].beds[0].therapistDuration, 'm').valueOf() - moment().valueOf();
+                        if (t < 0){
+                            $scope.rooms[r].beds[0].ttimeleft = 1;
+                        }
+                        else{
+                            $scope.rooms[r].beds[0].ttimeleft = t / 1000;
+                        }
+                    }
 
-                    // if ($scope.rooms[r].sisterDone){
-                    //     $scope.rooms[r].stimeleft = 0;
-                    // }
-                    // else{
-                    //     t = moment($scope.rooms[r].sisterTimeIn).add($scope.rooms[r].sisterDuration, 'm').valueOf() - moment().valueOf();
-                    //     if (t < 0){
-                    //         $scope.rooms[r].stimeleft = 0;
-                    //     }
-                    //     else{
-                    //         $scope.rooms[r].stimeleft = t / 1000;
-                    //     }
-                    // }
+                    if ($scope.rooms[r].beds[0].sisterDone){
+                        $scope.rooms[r].beds[0].stimeleft = 0;
+                    }
+                    else{
+                        t = moment($scope.rooms[r].beds[0].sisterTimeIn).add($scope.rooms[r].beds[0].sisterDuration, 'm').valueOf() - moment().valueOf();
+                        if (t < 0){
+                            $scope.rooms[r].beds[0].stimeleft = 1;
+                        }
+                        else{
+                            $scope.rooms[r].beds[0].stimeleft = t / 1000;
+                        }
+                    }
 
                     // console.log('info - Room:',$scope.rooms[r].name,'Beds:', $scope.rooms[r].beds.length);
                     for (b = 0; b < $scope.rooms[r].beds.length; b++){
