@@ -6,7 +6,7 @@ block content
         //- .row(ng-if='loading==true')
         //-     h2 loading
         .row(ng-if='loading==false')
-            each r in [1, 2, 3, 4, 5]
+            each r in [1, 2, 3, 4]
                 .row
                     each c in [1, 2, 3, 4, 5, 6]
                         .col-sm-2
@@ -75,9 +75,11 @@ block content
                                                     b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==false && (room.dTimerType=="SSR" || room.dTimerType=="SDR")', style='background-color:hsla(0, 100%, 90%, 1)') NS
 
                                                     //- yellow
-                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SSR"', style='background-color:hsla(50, 80%, 90%, 1)')
+
+                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SSR" && room.beds[0].dtimeleft > 0', style='background-color:hsla(50, 80%, 90%, 1)')
                                                         timer(countdown='room.beds[0].dtimeleft' interval="1000")
                                                             span {{mminutes}}:{{sseconds}}
+                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SSR" && room.beds[0].dtimeleft <= 0', style='background-color:hsla(50, 80%, 90%, 1)') 00:00
                                                     b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SDR"', style='background-color:hsla(50, 80%, 90%, 1)') Busy
 
                                                     //- green
@@ -128,15 +130,6 @@ block content
                                     //- .row
                                         //- span {{room}}
 
-                            br
-        //- .row
-        //-     .form-group
-        //-         ul.nav.nav-pills.pull-right
-        //-             li(role='presentation')
-        //-                 input.btn.btn-success(type="button", value='Add new room', ng-click='setModelOptions()', data-toggle="modal", data-target="#manageRoom")
-        //-             li(role='presentation')
-        //-                 input.btn.btn-primary(type="button", value="Back", ng-click='saveRooms()')
-
         .modal.fade#manageCubicle
             .modal-dialog
                 .modal-content.form-group.form-horizontal
@@ -156,7 +149,7 @@ block content
                                         +ng-input-combobox-min('doc', 'room.beds[0].doctor', 'Select a doctor', 'doctor._id as doctor.name for doctor in doctors', false, false, 'doctherChange()')
                                     .col-sm-2(ng-if='room.dTimerType!="SSR"')
                                     .col-sm-2(ng-if='room.dTimerType=="SSR"')
-                                        +ng-input-combobox-min('docDuration', 'room.beds[0].docterDuration', 'Select a duration', 'o as o for o in intervals.doctors', false, false)
+                                        +ng-input-combobox-min('docDuration', 'room.beds[0].doctorDuration', 'Select a duration', 'o as o for o in intervals.doctors', false, false)
                                     .col-sm-5
                                         ul.nav.nav-pills
                                             li(role='presentation', ng-if='(room.dTimerType=="SSR" || room.dTimerType=="SDR") && (room.beds[0].doctorDone==true || room.beds[0].doctorStart==false)')
@@ -235,7 +228,9 @@ block content
                     .modal-footer
                         ul.nav.nav-pills.pull-right
                             li(role='presentation')
-                                input.btn.btn-primary(type="button", value="Save", ng-click='saveRoom()', data-dismiss="modal")
+                                input.btn.btn-primary(type="button", value="Save", ng-click='saveRoom(true)')
+                            li(role='presentation')
+                                input.btn.btn-primary(type="button", value="Save & exit", ng-click='saveRoom(false)', data-dismiss="modal")
                             li(role='presentation')
                                 input.btn.btn-default(type="button", value="Reset room", ng-click='resetRoom(room.beds[0]._id)', data-dismiss="modal")
                         //- br
@@ -271,8 +266,10 @@ block content
                         br
                     .modal-footer
                         ul.nav.nav-pills.pull-right
+                            //- li(role='presentation')
+                            //-     input.btn.btn-primary(type="button", value="Save", ng-click='saveRoom(true)')
                             li(role='presentation')
-                                input.btn.btn-primary(type="button", value="Save", ng-click='saveRoom()', data-dismiss="modal")
+                                input.btn.btn-primary(type="button", value="Save & exit", ng-click='saveRoom(false)', data-dismiss="modal")
                             li(role='presentation')
                                 input.btn.btn-default(type="button", value="Reset room", ng-click='resetRoom(room.beds[0]._id)', data-dismiss="modal")
                         //- br

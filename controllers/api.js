@@ -12,7 +12,7 @@ var
     bedmodel = require('../models/bed');
 
 var
-    defualtDuration = 1;
+    defualtDuration = 20;
 
 module.exports = function (router) {
 
@@ -501,6 +501,7 @@ module.exports = function (router) {
 
         router.patch('/rooms/:rid/beds/:bid/:action', function(req, res) {
             var localsave = false;
+            console.log('info'.green, req.body.beds[0]);
 
             bedmodel.findById(req.params.bid, function(err, bed) {
                 if (err){
@@ -513,7 +514,7 @@ module.exports = function (router) {
                     switch(req.params.action) {
                         case 'dstart':
                             bed.doctorTimeIn = moment();
-                            bed.doctorDuration = req.body.doctorDuration ? req.body.doctorDuration : defualtDuration;
+                            bed.doctorDuration = req.body.beds[0].doctorDuration ? req.body.beds[0].doctorDuration : defualtDuration;
                             bed.doctorStart = true;
                             bed.doctorDone = false;
                             msg = 'doctor started.';
@@ -529,7 +530,7 @@ module.exports = function (router) {
                             break;
                         case 'tstart':
                             bed.therapistTimeIn = moment();
-                            bed.therapistDuration = req.body.therapistDuration ? req.body.therapistDuration : defualtDuration;
+                            bed.therapistDuration = req.body.beds[0].therapistDuration ? req.body.beds[0].therapistDuration : defualtDuration;
                             bed.therapistStart = true;
                             bed.therapistDone = false;
                             msg = 'therapist started';

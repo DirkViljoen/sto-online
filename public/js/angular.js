@@ -34,7 +34,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
 
                 if (response.data) {
                     $scope.doctors = response.data;
-                    $scope.doctors.splice(0,0,{'_id':'000000000000000000000000','name':' - ','colour':'#fdffff'});
+                    $scope.doctors.splice(0,0,{'_id':'000000000000000000000000','name':'none','colour':'#fdffff'});
                     console.log('Doctors:', $scope.doctors);
                     $scope.working++;
                     buildrooms();
@@ -49,7 +49,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                 // console.log(response.data);
                 if (response.data) {
                     $scope.therapists = response.data;
-                    $scope.therapists.splice(0,0,{'_id':'000000000000000000000000','name':' - ','colour':'#fdffff'});
+                    $scope.therapists.splice(0,0,{'_id':'000000000000000000000000','name':'none','colour':'#fdffff'});
                     console.log('Therapists:', $scope.therapists)
                     $scope.working++;
                     buildrooms();
@@ -126,11 +126,17 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             });
          };
 
-        $scope.saveRoom = function(){
+        $scope.saveRoom = function(showMessage){
+            console.log($scope.room);
             $http.put('/api/rooms/' + $scope.room._id, $scope.room)
                 .then(
                     function(result){
-                        $scope.saveBeds($scope.initview());
+                        if (showMessage){
+                            $scope.saveBeds(saveSuccess('Room details updated'));
+                        }
+                        else{
+                            $scope.saveBeds($scope.initview());
+                        }
                     }
                 )
          };
@@ -244,6 +250,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/dstart', $scope.room)
                 .then(
                     function(result){
+                        // $scope.saveRoom();
                         $scope.initview();
                     }
                 )
@@ -254,6 +261,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.dstop = function(id){
+            // $scope.saveRoom();
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/dstop', $scope.room)
                 .then(
                     function(result){
@@ -263,6 +271,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.dreset = function(id){
+            // $scope.saveRoom();
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/dreset', $scope.room)
                 .then(
                     function(result){
@@ -273,6 +282,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
 
         $scope.tstart = function(id){
             // if ($scope.room.therapistDuration){
+                // $scope.saveRoom();
                 $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/tstart', $scope.room)
                     .then(
                         function(result){
@@ -286,6 +296,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.tstop = function(id){
+            // $scope.saveRoom();
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/tstop', $scope.room)
                 .then(
                     function(result){
@@ -295,6 +306,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.treset = function(id){
+            // $scope.saveRoom();
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/treset', $scope.room)
                 .then(
                     function(result){
@@ -304,6 +316,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.sstart = function(id){
+            // $scope.saveRoom();
             // if ($scope.room.sisterDuration){
                 // $scope.room.sisterDuration = 180;
                 $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/sstart', $scope.room)
@@ -319,6 +332,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.sstop = function(id){
+            // $scope.saveRoom();
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/sstop', $scope.room)
                 .then(
                     function(result){
@@ -328,6 +342,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.sreset = function(id){
+            // $scope.saveRoom();
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/sreset', $scope.room)
                 .then(
                     function(result){
@@ -382,7 +397,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                         if (t < 0){
                             // $http.post('/api/rooms/' + $scope.rooms[r]._id + '/doctorStop', $scope.room)
                             // $scope.rooms[r].doctorDone = true;
-                            $scope.rooms[r].beds[0].dtimeleft = 1;
+                            $scope.rooms[r].beds[0].dtimeleft = 0;
                         }
                         else{
                             $scope.rooms[r].beds[0].dtimeleft = t / 1000;
@@ -395,7 +410,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                     else{
                         t = moment($scope.rooms[r].beds[0].therapistTimeIn).add($scope.rooms[r].beds[0].therapistDuration, 'm').valueOf() - moment().valueOf();
                         if (t < 0){
-                            $scope.rooms[r].beds[0].ttimeleft = 1;
+                            $scope.rooms[r].beds[0].ttimeleft = 0;
                         }
                         else{
                             $scope.rooms[r].beds[0].ttimeleft = t / 1000;
@@ -408,7 +423,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                     else{
                         t = moment($scope.rooms[r].beds[0].sisterTimeIn).add($scope.rooms[r].beds[0].sisterDuration, 'm').valueOf() - moment().valueOf();
                         if (t < 0){
-                            $scope.rooms[r].beds[0].stimeleft = 1;
+                            $scope.rooms[r].beds[0].stimeleft = 0;
                         }
                         else{
                             $scope.rooms[r].beds[0].stimeleft = t / 1000;
@@ -443,7 +458,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
 
             t = moment(start).add(increment, 'm').valueOf() - moment().valueOf();
             if (t < 1000) {
-                t = 0;
+                t = 1;
             };
             return t;
         };
