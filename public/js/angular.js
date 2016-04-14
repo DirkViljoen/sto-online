@@ -1,4 +1,4 @@
-var myModule = angular.module('app', ['timer','ngRoute', 'ui.bootstrap', 'colorpicker.module']);
+var myModule = angular.module('app', ['timer','ngRoute', 'ui.bootstrap', 'colorpicker.module', 'socket-io']);
 
 var refreshInterval = 10;
 
@@ -6,7 +6,28 @@ var doctorDefualtTime = 20,
     therapistDefualtTime = 20,
     sisterDefualtTime = 5;
 
-myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
+myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval, socket) {
+
+    // Listening to an event
+    socket.on('update', function(data) {
+        // console.log(data)
+
+        switch(data) {
+            case 'room':
+                $scope.working--;
+                getRooms();
+                break;
+            case 'doctor':
+                $scope.working--;
+                getdoctors();
+                break;
+            case 'therapist':
+                $scope.working--;
+                getTherapists();
+                break;
+        }
+    });
+
     $scope.loading = true;
     $scope.working = 0
     $scope.error = '';
@@ -127,7 +148,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
          };
 
         $scope.saveRoom = function(showMessage){
-            console.log($scope.room);
+            // console.log($scope.room);
             $http.put('/api/rooms/' + $scope.room._id, $scope.room)
                 .then(
                     function(result){
@@ -135,7 +156,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                             $scope.saveBeds(saveSuccess('Room details updated'));
                         }
                         else{
-                            $scope.saveBeds($scope.initview());
+                            $scope.saveBeds(registerChange('room'));
                         }
                     }
                 )
@@ -145,7 +166,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             saveSuccess('Rooms updated successfully');
          };
 
-        $scope.updateRoom = function(){
+        /*$scope.updateRoom = function(){
             console.log($scope.room);
             if ($scope.room._id){
                 $http.put('/api/rooms/' + $scope.room._id, $scope.room)
@@ -165,7 +186,7 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                         }
                     )
             }
-         };
+         // };*/
 
         $scope.saveBeds = function(callback){
             var total = $scope.room.beds.length;
@@ -238,7 +259,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
 
         saveSuccess = function(message){
             dialog_success_Ok('Success',message, function(){
-                $window.location.href = '/rooms/view';
+                // $window.location.href = '/rooms/view';
+                registerChange('room');
             });
          }
 
@@ -251,13 +273,11 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                 .then(
                     function(result){
                         // $scope.saveRoom();
-                        $scope.initview();
+                        // $scope.initview();
+                        registerChange('room');
                     }
+
                 )
-         //    }
-         //    else {
-         //        alert('Please choose a duration before pressing start.');
-         //    }
          };
 
         $scope.dstop = function(id){
@@ -265,7 +285,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/dstop', $scope.room)
                 .then(
                     function(result){
-                        $scope.initview();
+                        // $scope.initview();
+                        registerChange('room');
                     }
                 )
          };
@@ -275,8 +296,10 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/dreset', $scope.room)
                 .then(
                     function(result){
-                        $scope.initview();
+                        // $scope.initview();
+                        registerChange('room');
                     }
+                    // registerChange('room');
                 )
          };
 
@@ -286,7 +309,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                 $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/tstart', $scope.room)
                     .then(
                         function(result){
-                            $scope.initview();
+                            // $scope.initview();
+                            registerChange('room');
                         }
                     )
             // }
@@ -300,7 +324,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/tstop', $scope.room)
                 .then(
                     function(result){
-                        $scope.initview();
+                        // $scope.initview();
+                        registerChange('room');
                     }
                 )
          };
@@ -310,25 +335,20 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/treset', $scope.room)
                 .then(
                     function(result){
-                        $scope.initview();
+                        // $scope.initview();
+                        registerChange('room');
                     }
                 )
          };
 
         $scope.sstart = function(id){
-            // $scope.saveRoom();
-            // if ($scope.room.sisterDuration){
-                // $scope.room.sisterDuration = 180;
-                $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/sstart', $scope.room)
-                    .then(
-                        function(result){
-                            $scope.initview();
-                        }
-                    )
-            // }
-            // else {
-            //     alert('Please choose a duration before pressing start.');
-            // }
+            $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/sstart', $scope.room)
+                .then(
+                    function(result){
+                        // $scope.initview();
+                        registerChange('room');
+                    }
+                )
          };
 
         $scope.sstop = function(id){
@@ -336,7 +356,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/sstop', $scope.room)
                 .then(
                     function(result){
-                        $scope.initview();
+                        // $scope.initview();
+                        registerChange('room');
                     }
                 )
          };
@@ -346,7 +367,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/sreset', $scope.room)
                 .then(
                     function(result){
-                        $scope.initview();
+                        // $scope.initview();
+                        registerChange('room');
                     }
                 )
          };
@@ -355,7 +377,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $http.patch('/api/rooms/' + $scope.room._id + '/beds/' + id + '/resetAll', $scope.room)
                 .then(
                     function(result){
-                        $scope.initview();
+                        // $scope.initview();
+                        registerChange('room');
                     }
                 )
          };
@@ -392,7 +415,8 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
                         $scope.rooms[r].beds[0].dtimeleft = 0;
                     }
                     else{
-
+                        // console.log($scope.rooms[r].beds[0].doctorTimeIn);
+                        // Mon Feb 08 2016 23:32:46 GMT+0200
                         t = moment($scope.rooms[r].beds[0].doctorTimeIn).add($scope.rooms[r].beds[0].doctorDuration, 'm').valueOf() - moment().valueOf();
                         if (t < 0){
                             // $http.post('/api/rooms/' + $scope.rooms[r]._id + '/doctorStop', $scope.room)
@@ -511,6 +535,10 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
             $scope.room.beds[0].sisterDone = false;
         };
 
+        registerChange = function(category){
+            socket.emit('change', category);
+        }
+
     // timer specific
 
         function refreshPage() {
@@ -539,7 +567,28 @@ myModule.controller('rooms-ctrl', function($scope, $http, $window, $interval) {
         };
  });
 
-myModule.controller('settings-ctrl', function($scope, $http, $window, $interval) {
+myModule.controller('settings-ctrl', function($scope, $http, $window, $interval, socket) {
+
+    // Listening to an event
+    socket.on('update', function(data) {
+        // console.log(data)
+
+        switch(data) {
+            case 'room':
+                $scope.working--;
+                getRooms();
+                break;
+            case 'doctor':
+                $scope.working--;
+                getdoctors();
+                break;
+            case 'therapist':
+                $scope.working--;
+                getTherapists();
+                break;
+        }
+    });
+
     $scope.loading = false;
     $scope.error = '';
 
@@ -647,7 +696,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
             $http.put('/api/rooms/' + $scope.room._id, $scope.room)
                 .then(
                     function(result){
-                        $scope.saveBeds($scope.initview());
+                        $scope.saveBeds(registerChange('room'));
                     }
                 )
          };
@@ -662,7 +711,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                 $http.put('/api/rooms/' + $scope.room._id, $scope.room)
                     .then(
                         function(result){
-                            $scope.saveBeds($scope.initmanage());
+                            $scope.saveBeds(registerChange('room'));
                         }
                     )
             }
@@ -671,7 +720,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                     .then(
                         function(result){
                             $scope.room._id = result.data._id;
-                            $scope.saveBeds($scope.initmanage());
+                            $scope.saveBeds(registerChange('room'));
                         }
                     )
             }
@@ -746,7 +795,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
             $http.delete('/api/rooms/' + $scope.room._id, $scope.room)
                 .then(
                     function(result){
-                        $scope.initmanage();
+                        registerChange('room');
                     }
                 )
          };
@@ -772,6 +821,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                                 sum++;
                                 if (sum == total){
                                     saveSuccess('Doctors updated successfully');
+                                    registerChange('doctor');
                                 }
                             }
                         )
@@ -784,6 +834,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                                 sum++;
                                 if (sum == total){
                                     saveSuccess('Doctors updated successfully');
+                                    registerChange('doctor');
                                 }
                             }
                         )
@@ -801,6 +852,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                                     sum++;
                                     if (sum == total){
                                         saveSuccess('Doctors updated successfully');
+                                        registerChange('doctor');
                                     }
                                 }
                             )
@@ -830,6 +882,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                                 sum++;
                                 if (sum == total){
                                     saveSuccess('Therapists updated successfully');
+                                    registerChange('therapist');
                                 }
                             }
                         )
@@ -842,6 +895,7 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                                 sum++;
                                 if (sum == total){
                                     saveSuccess('Therapists updated successfully');
+                                    registerChange('therapist');
                                 }
                             }
                         )
@@ -859,12 +913,14 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                                     sum++;
                                     if (sum == total){
                                         saveSuccess('Therapists updated successfully');
+                                        registerChange('therapist');
                                     }
                                 }
                             )
                     }
                 }
             }
+
          };
 
         saveSuccess = function(message){
@@ -885,6 +941,10 @@ myModule.controller('settings-ctrl', function($scope, $http, $window, $interval)
                 $scope.room.beds = [];
             }
          }
+
+        registerChange = function(category){
+            socket.emit('change', category);
+        }
 
     // Settings
 

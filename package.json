@@ -30,7 +30,8 @@
     "passport-google-oauth": "^0.2.0",
     "passport-local": "^1.0.0",
     "q": "^1.4.1",
-    "requirejs": "^2.1.20"
+    "requirejs": "^2.1.20",
+    "socket.io": "^1.4.5"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
