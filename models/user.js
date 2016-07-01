@@ -27,6 +27,7 @@ var userModel = function () {
                 return;
             }
             //Encrypt it using bCrypt. Using the Sync method instead of Async to keep the code simple.
+            // console.log('try to hash pwd',user.password, crypto.getCryptLevel());
             var hashedPwd = bcrypt.hashSync(user.password, crypto.getCryptLevel());
 
             //Replace the plaintext pw with the Hash+Salted pw;

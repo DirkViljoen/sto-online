@@ -1,0 +1,48 @@
+extends ../layouts/master-navigation
+include ../../mixins/mixins
+
+block content
+  form(id='usersManage', ng-controller='settings-ctrl', ng-init='initusers()')
+    .row
+      .col-md-2.col-sm-1
+      .col-md-8.col-sm-10
+        .grouphead
+          h4 Manage Users
+        .groupbox
+          table.table.table-hover.table-responsive(id="users-table" st-table='users')
+            thead
+              tr
+                th
+                th Name
+                th Username
+                th Password
+                th(width='100px') Role
+
+            tbody
+              tr(ng-repeat="user in users")
+                td
+                  input.btn.btn-warning(type="button", value='Remove', ng-click='removeUser(user)')
+                td
+                  +ng-input-text-min('uname', 'user.name', 'Display name', false, false)
+                td
+                  +ng-input-text-min('ulogin', 'user.login', 'Username', false, false)
+                td
+                  +ng-input-text-min('upass', 'user.password_new', 'New password', false, false)
+                td
+                  +ng-input-combobox-min('urole', 'user.role', 'Select a role', 'r as r for r in staticLookup.roles', false, false)
+              tr
+                td
+                  input.btn.btn-success(type="button", value='Add', ng-click='addUser()')
+                td
+                td
+                td
+                td
+
+    br
+    .row
+      .col-md-2.col-sm-1
+      .col-md-8.col-sm-10
+        .form-group
+          ul.nav.nav-pills.pull-right
+            li(role='presentation')
+              input.btn.btn-primary(type="button", value="Save", ng-click='saveUsers()')

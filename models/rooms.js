@@ -24,7 +24,14 @@ var RoomSchema   = new Schema({
     tTimerType: String,
     tTrackTime: Number,
     sTimerType: String,
-    sTrackTime: Number
+    sTrackTime: Number,
+
+    dEnabled: Number,
+    dShow: Number,
+    tEnabled: Number,
+    tShow: Number,
+    sEnabled: Number,
+    sShow: Number
 
     // moved to bed
     // doctor: { type : mongoose.Schema.ObjectId, ref : 'doctors' },

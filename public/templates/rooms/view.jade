@@ -61,30 +61,16 @@ block content
 
                                 //- Cubicles
                                 div.room(ng-if='room.multipleBeds==0', data-toggle="modal", data-target="#manageCubicle", ng-click="setModelOptions(room._id)", style='background: linear-gradient(hsla(0,100%,100%,1), {{room.beds[0].dcolour}})')
-                                    //- 'background:linear-gradient(down,{{room.beds[0].dcolour}},hsla(0,100%,90%,1))')
                                     h3 {{room.name}}
 
                                     //- Doctor
-                                    div.info_tag
+                                    div.info_tag(ng-if='room.dEnabled==1 && room.dShow==1')
                                         .row
                                             .col-md-8
                                                 b {{room.beds[0].dname}}
                                             .col-md-4
                                                 .row(ng-if='room.beds[0].dname.length>3 && room.beds[0].doctor!="000000000000000000000000"')
-                                                    //- red
-                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==false && (room.dTimerType=="SSR" || room.dTimerType=="SDR")', style='background-color:hsla(0, 100%, 90%, 1)') NS
-
-                                                    //- yellow
-
-                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SSR" && room.beds[0].dtimeleft > 0', style='background-color:hsla(50, 80%, 90%, 1)')
-                                                        timer(countdown='room.beds[0].dtimeleft' interval="1000")
-                                                            span {{mminutes}}:{{sseconds}}
-                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SSR" && room.beds[0].dtimeleft <= 0', style='background-color:hsla(50, 80%, 90%, 1)') 00:00
-                                                    b.info(ng-if='room.beds[0].doctorDone==false && room.beds[0].doctorStart==true && room.dTimerType=="SDR"', style='background-color:hsla(50, 80%, 90%, 1)') Busy
-
-                                                    //- green
-                                                    b.info(ng-if='room.beds[0].doctorDone==true', style='background-color:hsla(100, 100%, 90%, 1)') Done
-
+                                                    b.info(class='{{room.beds[0].dstatusclass}}') {{room.beds[0].dstatus}}
 
                                     //- Patient
                                     div.info_tag
@@ -93,42 +79,22 @@ block content
                                                 span.info_empty {{room.beds[0].patient}}
 
                                     //- Therapist
-                                    div.info_tag
+                                    div.info_tag(ng-if='room.tEnabled==1 && room.tShow==1')
                                         .row
                                             .col-md-8
                                                 span.info_empty(style='background-color:{{room.therapists[0].colour}}') {{room.therapists[0].name}}
                                             .col-md-4
                                                 .row(ng-if='room.therapists.length>0 && room.therapists[0]._id!="000000000000000000000000"')
-                                                    //- red
-                                                    b.info(ng-if='room.beds[0].therapistDone==false && room.beds[0].therapistStart==false && (room.tTimerType=="SSR" || room.tTimerType=="SDR")', style='background-color:hsla(0, 100%, 90%, 1)') NS
-
-                                                    //- yellow
-                                                    b.info(ng-if='room.beds[0].therapistDone==false && room.beds[0].therapistStart==true && room.tTimerType=="SSR"', style='background-color:hsla(50, 80%, 90%, 1)')
-                                                        timer(countdown='room.beds[0].ttimeleft' interval="1000")
-                                                            span {{mminutes}}:{{sseconds}}
-                                                    b.info(ng-if='room.beds[0].therapistDone==false && room.beds[0].therapistStart==true && room.tTimerType=="SDR"', style='background-color:hsla(50, 80%, 90%, 1)') Busy
-
-                                                    //- green
-                                                    b.info(ng-if='room.beds[0].therapistDone==true', style='background-color:hsla(100, 100%, 90%, 1)') Done
+                                                    b.info(class='{{room.beds[0].tstatusclass}}') {{room.beds[0].tstatus}}
 
                                     //- Sister
-                                    div.info_tag
+                                    div.info_tag(ng-if='room.sEnabled==1 && room.sShow==1')
                                         .row
                                             .col-md-8
                                                 span.info_empty Sister
                                             .col-md-4
-                                                .row
-                                                    //- red
-                                                    b.info(ng-if='room.beds[0].sisterDone==false && room.beds[0].sisterStart==false && (room.sTimerType=="SSR" || room.sTimerType=="SDR")', style='background-color:hsla(0, 100%, 90%, 1)') NS
-
-                                                    //- yellow
-                                                    b.info(ng-if='room.beds[0].sisterDone==false && room.beds[0].sisterStart==true && room.sTimerType=="SSR"', style='background-color:hsla(50, 80%, 90%, 1)') 00:12
-                                                    b.info(ng-if='room.beds[0].sisterDone==false && room.beds[0].sisterStart==true && room.sTimerType=="SDR"', style='background-color:hsla(50, 80%, 90%, 1)') Busy
-
-                                                    //- green
-                                                    b.info(ng-if='room.beds[0].sisterDone==true', style='background-color:hsla(100, 100%, 90%, 1)') Done
-                                    //- .row
-                                        //- span {{room}}
+                                                .row(ng-if='room.beds[0].sstatus != ""')
+                                                    b.info(class='{{room.beds[0].sstatusclass}}') {{room.beds[0].sstatus}}
 
         .modal.fade#manageCubicle
             .modal-dialog
@@ -136,13 +102,13 @@ block content
                     .modal-header
                         h4.modal-title Manage {{room.name}}
                     .modal-body
-                        .grouphead
+                        .grouphead(ng-if='room.dEnabled==1')
                             h5
                                 span Docter&nbsp;
                                 span(ng-if='room.docterDone==true && room.docterStart==true') - Done
                                 span(ng-if='room.docterDone==false && room.docterStart==false') - NS
                                 span(ng-if='room.docterDone==false && room.docterStart==true') - Busy
-                        .groupbox
+                        .groupbox(ng-if='room.dEnabled==1')
                             .form-group
                                 .row
                                     .col-sm-5
@@ -172,13 +138,13 @@ block content
                                         +ng-input-text-min('pname', 'room.beds[0].patient', 'Add the patients name', false, false)
 
                         br
-                        .grouphead
+                        .grouphead(ng-if='room.tEnabled==1')
                             h5
                                 span Therapist&nbsp;
                                 span(ng-if='room.therapistDone==true && room.therapistStart==true') - Done
                                 span(ng-if='room.therapistDone==false && room.therapistStart==false') - NS
                                 span(ng-if='room.therapistDone==false && room.therapistStart==true') - Busy
-                        .groupbox
+                        .groupbox(ng-if='room.tEnabled==1')
                             .form-group
                                 .row
                                     .col-sm-5
@@ -199,13 +165,13 @@ block content
                                             li(role='presentation', ng-if='room.beds[0].therapistDone==true || room.beds[0].therapistStart==true')
                                                 input.btn.btn-default(type="button", value='Reset', ng-click='treset(room.beds[0]._id)', data-dismiss="modal")
                         br
-                        .grouphead
+                        .grouphead(ng-if='room.sEnabled==1')
                             h5
                                 span Sister&nbsp;
                                 span(ng-if='room.sisterDone==true && room.sisterStart==true') - Done
                                 span(ng-if='room.sisterDone==false && room.sisterStart==false') - NS
                                 span(ng-if='room.sisterDone==false && room.sisterStart==true') - Busy
-                        .groupbox
+                        .groupbox(ng-if='room.sEnabled==1')
                             .form-group
                                 .row
                                     .col-sm-5

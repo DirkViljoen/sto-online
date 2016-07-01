@@ -125,3 +125,15 @@
   padding-left: 2px;
   padding-right: 8px;
 }
+/* line 150, css/app */
+.status_red {
+  background-color: #ffcccc;
+}
+/* line 154, css/app */
+.status_green {
+  background-color: #ddffcc;
+}
+/* line 158, css/app */
+.status_yellow {
+  background-color: #faf3d1;
+}

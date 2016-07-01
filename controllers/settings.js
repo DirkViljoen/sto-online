@@ -2,6 +2,16 @@
 
 module.exports = function (router) {
 
+    router.get('/users', function (req, res) {
+        var obj = {};
+        obj.p = req.params;
+        obj.q = req.query;
+        obj.u = req.user;
+
+        res.render('settings/users',obj);
+
+    });
+
     router.get('/doctors', function (req, res) {
 
         // res.send('<code><pre>' + JSON.stringify(model, null, 2) + '</pre></code>');

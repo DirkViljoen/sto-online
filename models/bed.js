@@ -15,14 +15,17 @@ var BedSchema   = new Schema({
     doctorDuration: Number,
     doctorDone: Boolean,
     doctorStart: Boolean,
+    doctorStop: String,
     therapistTimeIn: String,
     therapistDuration: Number,
     therapistDone: Boolean,
     therapistStart: Boolean,
+    therapistStop: String,
     sisterTimeIn: String,
     sisterDuration: Number,
     sisterDone: Boolean,
-    sisterStart: Boolean
+    sisterStart: Boolean,
+    sisterStop: String
 
 });
 
